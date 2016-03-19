@@ -2,10 +2,10 @@ package actionsFromServer;
 
 
 
-public class ConnectingResponse implements Action {
+public class ConnectingServerResponse implements Action {
     private boolean connectIsSuccessful;
 
-    public ConnectingResponse(boolean connectIsSuccessful) {
+    public ConnectingServerResponse(boolean connectIsSuccessful) {
         this.connectIsSuccessful = connectIsSuccessful;
     }
     

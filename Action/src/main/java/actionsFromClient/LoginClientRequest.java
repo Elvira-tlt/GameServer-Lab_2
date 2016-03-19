@@ -3,10 +3,10 @@ package actionsFromClient;
 
 import actionsFromServer.Action;
 
-public class LoginRequest implements Action {
+public class LoginClientRequest implements Action {
     private String loginUser;
 
-    public LoginRequest(String loginUser) {
+    public LoginClientRequest(String loginUser) {
         this.loginUser = loginUser;
     }
     

@@ -1,8 +1,6 @@
 package server;
 
-import actionsFromClient.*;
 import actionsFromServer.*;
-import server.clientActionsHandlers.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,17 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-//взаимодействие с одним клиентом
+//�������������� � ����� ��������
 public class ClientConnector extends Thread {
 	private Socket socket;
 	private ObjectInputStream fromClient;
 	private ObjectOutputStream toClient;
 
-	private Map<Class, ActionHandler> actionsHandlers = new HashMap<>();
+	private Map<Class, ClientActionHandler> actions2Handlers = new HashMap<>();
 
 	public ClientConnector(Socket socket) {
 		this.socket = socket;
-		prepareActionsHandler();
 		//////////
 		System.out.println("Server socket: " + socket);
 		////
@@ -59,31 +56,31 @@ public class ClientConnector extends Thread {
 				Action actionResponse = (Action) fromClient.readObject();
 
 				////////////
-				System.out.println("	Server: Action recive is successful");
+				System.out.println("	Server: Action recive is successful:" + actionResponse);
 				///////////
 
-				handleActionsAndSendResponse(actionResponse);
+				handleActions(actionResponse);
 		}
 	}
 
-	private void handleActionsAndSendResponse(Action actionFromClient) {
-		Class actionFromClientClass = actionFromClient.getClass();
+	private void handleActions(Action actionFromClient) {
 
-		Set<Map.Entry<Class, ActionHandler>> entreiesActionsHandlers = actionsHandlers.entrySet();
-		for (Map.Entry<Class, ActionHandler> entry: entreiesActionsHandlers) {
+		Class<? extends Action> actionFromClientClass = actionFromClient.getClass();
+
+		Set<Map.Entry<Class, ClientActionHandler>> entreiesActionsHandlers = actions2Handlers.entrySet();
+		for (Map.Entry<Class, ClientActionHandler> entry: entreiesActionsHandlers) {
+
 			if (entry.getKey().equals(actionFromClientClass)) {
-				ActionHandler handlerAction = entry.getValue();
-				handlerAction.handle();
-				// TODO Добавить отправку сообщения клиенту
+				ClientActionHandler<Action> handlerAction = entry.getValue();
+
+				handlerAction.handle(actionFromClient, this);
+				// TODO �������� �������� ��������� �������
+				//break;
 			}
 		}
 	}
-
-	private void prepareActionsHandler() {
-		actionsHandlers.put(LoginRequest.class,new LoginRequestHandler());
-		actionsHandlers.put(PlayersRequest.class,new PlayersRequestHandler());
-		actionsHandlers.put(FreeUsersRequest.class,new FreeUsersRequestHandler());
-		actionsHandlers.put(ExitRequest.class,new ExitRequestHandler());
-		actionsHandlers.put(ExitFromGameRequest.class,new ExitFromGameRequestHandler());
+	
+		public void setActions2HandlersForConnector(Map<Class, ClientActionHandler> action2handlerMap) {
+		actions2Handlers = action2handlerMap;
 	}
 }

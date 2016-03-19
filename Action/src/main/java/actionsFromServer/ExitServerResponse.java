@@ -2,10 +2,10 @@ package actionsFromServer;
 
 
 
-public class ExitResponse implements Action {
+public class ExitServerResponse implements Action {
 	private boolean isExit;
 
-    public ExitResponse(boolean isExit) {
+    public ExitServerResponse(boolean isExit) {
         this.isExit = isExit;
     }
     

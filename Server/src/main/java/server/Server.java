@@ -3,14 +3,61 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.HashMap;
+import java.util.Map;
+
+import actionsFromClient.ExitClientRequest;
+import actionsFromClient.ExitFromGameClientRequest;
+import actionsFromClient.FreeUsersClientRequest;
+import actionsFromClient.LoginClientRequest;
+import actionsFromClient.PlayersClientRequest;
+import actionsFromServer.ClientActionHandler;
+import server.clientActionHandlers.ExitFromGameRequestHandler;
+import server.clientActionHandlers.ExitRequestHandler;
+import server.clientActionHandlers.FreeUsersRequestHandler;
+import server.clientActionHandlers.LoginRequestHandler;
+import server.clientActionHandlers.PlayersRequestHandler;
 
 public class Server {
 	public static final int PORT = 8008;
-	Socket socket;
+	//private Socket socket;
+	private int countConnecting;
+	private Map<Class, ClientActionHandler> actions2Handlers = new HashMap<>();
+	private UserDatabase userDatabase;
 
-//	private List <Client> allClients = new ArrayList<Client>();
-	//private List <Client> players = new ArrayList<Client>();
+	public Server() {
+		userDatabase = new UserDatabase();
+		prepareActions2HandlersToConnectors();
+	}
+
+	
+	private void createClientsInteraction (Socket socket) {
+		ClientConnector clientConnector = new ClientConnector(socket);
+		clientConnector.setActions2HandlersForConnector(actions2Handlers);
+		clientConnector.start();
+	}
+	
+	
+	private void prepareActions2HandlersToConnectors() {
+			LoginRequestHandler loginRequestHandler = new LoginRequestHandler();
+			PlayersRequestHandler playersRequestHandler = new PlayersRequestHandler();
+			FreeUsersRequestHandler freeUsersRequestHandler = new FreeUsersRequestHandler();
+			ExitRequestHandler exitRequestHandler = new ExitRequestHandler();
+			ExitFromGameRequestHandler exitFromGameRequestHandler = new ExitFromGameRequestHandler();
+			
+			//setting other classes to ActionHandlers:
+			loginRequestHandler.setUserDatabase(userDatabase);
+			//TODO
+			
+			
+			
+			//add ActionHandlers to Map actions2Handlers:
+			actions2Handlers.put(LoginClientRequest.class,loginRequestHandler);
+			actions2Handlers.put(PlayersClientRequest.class,playersRequestHandler);
+			actions2Handlers.put(FreeUsersClientRequest.class,freeUsersRequestHandler);
+			actions2Handlers.put(ExitClientRequest.class,exitRequestHandler);
+			actions2Handlers.put(ExitFromGameClientRequest.class,exitFromGameRequestHandler);
+	}
 
 	public void startServer () {
 		try {
@@ -19,19 +66,16 @@ public class Server {
 			//////
 			System.out.println("Started: " + serverSocket);
 			////
-
 			while(true) {
-				socket = serverSocket.accept();
+				Socket socket = serverSocket.accept();
 				/////
 				System.out.println("Connection accepted: " + socket);
 				////
-
-				Thread interactionWithClient = new ClientConnector(socket);
-				interactionWithClient.start();
+				createClientsInteraction(socket);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Не удается запустить сервер");
+			System.out.println("�� ������� ��������� ������");
 			e.printStackTrace();
 		}
 	}

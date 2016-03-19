@@ -1,7 +1,7 @@
 package client;
 
-import actionsFromClient.LoginRequest;
-import actionsFromClient.PlayersRequest;
+import actionsFromClient.LoginClientRequest;
+import actionsFromClient.PlayersClientRequest;
 
 
 public class Client {
@@ -14,8 +14,7 @@ public class Client {
 	public static void main (String[] args) {
 			Client client = new Client();
 			client.connectingToServer();
-			client.serverConnector.sendToClientConnector(new PlayersRequest());
-			client.serverConnector.sendToClientConnector(new LoginRequest("Vadim"));
+			client.serverConnector.sendToClientConnector(new LoginClientRequest("Vadim"));
 	}
 	
 }

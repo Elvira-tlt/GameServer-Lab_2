@@ -3,7 +3,7 @@ package actionsFromClient;
 
 import actionsFromServer.Action;
 
-public class PlayersRequest implements Action {
+public class ExitClientRequest implements Action {
 
 
 }

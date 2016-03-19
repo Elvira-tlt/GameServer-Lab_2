@@ -2,10 +2,10 @@ package actionsFromServer;
 
 
 
-public class ExitFromGameResponse implements Action {
+public class ExitFromGameServerResponse implements Action {
 	private boolean isExitFromGame;
 
-    public ExitFromGameResponse(boolean isExit) {
+    public ExitFromGameServerResponse(boolean isExit) {
         this.isExitFromGame = isExit;
     }
     

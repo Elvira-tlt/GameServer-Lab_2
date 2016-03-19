@@ -5,10 +5,10 @@ import server.User;
 import java.util.List;
 
 
-public class FreeUsersResponse implements Action {
+public class FreeUsersServerResponse implements Action {
     private List<User> freeUsers;
 
-    public FreeUsersResponse(List<User> freeUsers) {
+    public FreeUsersServerResponse(List<User> freeUsers) {
         this.freeUsers = freeUsers;
     }
 

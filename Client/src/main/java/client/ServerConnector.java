@@ -1,5 +1,6 @@
 package client;
 
+import actionsFromClient.ServerActionHandler;
 import actionsFromServer.*;
 import client.serverActionsHandlers.*;
 
@@ -22,7 +23,7 @@ public class ServerConnector extends Thread{
 	private ObjectInputStream fromServer;
 	private ObjectOutputStream toServer;
 
-	private Map<Class, ActionHandler> actionsHandlers = new HashMap<>();
+	private Map<Class, ServerActionHandler> actionsHandlers = new HashMap<>();
 
 	private boolean isConnectedToServer = false;
 
@@ -98,20 +99,24 @@ public class ServerConnector extends Thread{
 	}
 
 	private void prepareActionsHandler() {
-		actionsHandlers.put(LoginResponse.class,new LoginResponseHandler());
-		actionsHandlers.put(PlayersResponse.class,new PlayersResponseHandler());
-		actionsHandlers.put(FreeUsersResponse.class,new FreeUsersResponseHandler());
-		actionsHandlers.put(ExitResponse.class,new ExitResponseHandler());
-		actionsHandlers.put(ExitFromGameResponse.class,new ExitFromGameResponseHandler());
+		actionsHandlers.put(LoginServerResponse.class, new LoginResponseHandlerClient());
+		actionsHandlers.put(PlayersServerResponse.class,new PlayersResponseHandlerClient());
+		actionsHandlers.put(FreeUsersServerResponse.class,new FreeUsersResponseHandlerClient());
+		actionsHandlers.put(ExitServerResponse.class,new ExitResponseHandlerClient());
+		actionsHandlers.put(ExitFromGameServerResponse.class,new ExitFromGameResponseHandlerClient());
+		actionsHandlers.put(ConnectingServerResponse.class, new ConnectingResponseHandlerClient());
 	}
 
 	private void handleActions(Action actionFromServer) {
 		Class actionFromServerClass = actionFromServer.getClass();
-		Set<Map.Entry<Class, ActionHandler>> entreiesActionsHandlers = actionsHandlers.entrySet();
-		for (Map.Entry<Class, ActionHandler> entry: entreiesActionsHandlers) {
+		Set<Map.Entry<Class, ServerActionHandler>> entreiesActionsHandlers = actionsHandlers.entrySet();
+		for (Map.Entry<Class, ServerActionHandler> entry: entreiesActionsHandlers) {
 			if (entry.getKey().equals(actionFromServerClass)) {
-				ActionHandler handlerAction = entry.getValue();
-				handlerAction.handle();
+				ServerActionHandler handlerAction = entry.getValue();
+				
+				////!!!!!!!!!!!! ��������, ��� ������ � ��������� Connector-�(client � server)
+				// � ServerActionHandler
+				handlerAction.handle(actionFromServer);
 			}
 		}
 	}

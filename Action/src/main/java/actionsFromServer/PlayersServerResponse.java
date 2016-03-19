@@ -4,10 +4,10 @@ import java.util.List;
 import server.User;
 
 
-public class PlayersResponse implements Action {
+public class PlayersServerResponse implements Action {
     private List<User> players;
 
-    public PlayersResponse(List<User> players) {
+    public PlayersServerResponse(List<User> players) {
         this.players = players;
     }
 
