@@ -1,9 +1,9 @@
 package client.view;
 
+import client.actionListeners.LoginInSystemListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.LabelView;
-import java.awt.*;
 
 public class ConnectingWindow extends JFrame{
     private final String TITLEGAME = "Добро пожаловать!";
@@ -11,6 +11,9 @@ public class ConnectingWindow extends JFrame{
     private JLabel textProcessInWindow = new JLabel("   Пожалуйста, войдите в систему или зарегистрируйтесь!");
     private JTextField loginField;
     private JPasswordField passwordField;
+    private JButton buttonLogin;
+    private JButton buttonRegistration;
+
     
     
     public ConnectingWindow(){
@@ -34,10 +37,27 @@ public class ConnectingWindow extends JFrame{
     }
     
     public String getPasswordFromField() {
-    	//м.б. getPassword : char[] ???
-    	String textPasswordField = passwordField.getSelectedText();
-    	return textPasswordField;
+        String passwordFromField;
+        StringBuffer textPasswordField = new StringBuffer();
+    	char[] password = passwordField.getPassword();
+        textPasswordField.append(password);
+
+        passwordFromField = textPasswordField.toString();
+        return passwordFromField;
     }
+
+    public void setLoginListenerToButtonLogin(LoginInSystemListener listener){
+        ////
+        System.out.println("set Listener to button: " + listener);
+        //
+        buttonLogin.addActionListener(listener);
+    }
+
+    public JButton getButtonRegistration(){
+        return buttonRegistration;
+    }
+
+
 
     private void createLoginPanel() {
         loginMainBox = Box.createVerticalBox();
@@ -49,8 +69,8 @@ public class ConnectingWindow extends JFrame{
         JLabel passwordLabel = new JLabel("Пароль:");
         loginField = new JTextField();
         passwordField = new JPasswordField();
-        JButton buttonLogin = new JButton("Войти");
-        JButton buttonRegistration = new JButton("Зарегистрироваться");
+        buttonLogin = new JButton("Войти");
+        buttonRegistration = new JButton("Зарегистрироваться");
 
         boxLogin.add(loginLabel);
         boxLogin.add(Box.createHorizontalStrut(6));

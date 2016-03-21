@@ -1,9 +1,9 @@
-package client.view.actionListeners;
+package client.actionListeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginInSystem implements ActionListener {
+public class RegistrationInSystemListener implements ActionListener {
 
 
 
