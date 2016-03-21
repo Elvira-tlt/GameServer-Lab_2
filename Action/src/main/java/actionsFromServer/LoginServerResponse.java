@@ -3,22 +3,13 @@ package actionsFromServer;
 
 
 public class LoginServerResponse implements Action {
-    private boolean loginIsSuccessful;
+    private LoginTypeResponseFromServer typeResponseFromServer;
 
-    public LoginServerResponse(boolean loginIsSuccessful) {
-        this.loginIsSuccessful = loginIsSuccessful;
+    public LoginServerResponse(LoginTypeResponseFromServer typeResponseFromServer) {
+        this.typeResponseFromServer = typeResponseFromServer;
     }
     
-    public boolean getResponse() {
-    	return loginIsSuccessful;
+    public LoginTypeResponseFromServer getResponse() {
+    	return typeResponseFromServer;
     }
-    
-    /*если false, то указывается номер ошибки: 
-     * не заполнено поле login
-     * 
-     * 
-     * 
-     * 
-     * 
-     */
 }

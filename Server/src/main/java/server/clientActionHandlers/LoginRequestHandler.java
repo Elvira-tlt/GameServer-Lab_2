@@ -1,6 +1,7 @@
 package server.clientActionHandlers;
 
 
+import actionsFromServer.LoginTypeResponseFromServer;
 import server.ClientConnector;
 import server.User;
 import server.UserDatabase;
@@ -10,57 +11,32 @@ import actionsFromServer.LoginServerResponse;
 
 public class LoginRequestHandler implements ClientActionHandler<LoginClientRequest> {
 	private UserDatabase userDatabase;
-	//private int countGuests;
-	private boolean isSuccessfulLogin;
-
-	
 
     @Override
     public void handle(LoginClientRequest loginFromClientAction, ClientConnector connector) {
-    	User connectedUser;
-        isSuccessfulLogin = false;
-    	
-    	//////////
-        System.out.println("IN LoginRequestHandler");
-        //////
+    	User connectedUser = null;
+        LoginTypeResponseFromServer loginTypeResponseFromServer;
 
         String login = loginFromClientAction.getLogin();
-        
-        //сделать проверка на !null на стороне клиента??
-        if (login != null) {
-            String userName = login;
-            
-          //searchUserInDatabase:
-            connectedUser = userDatabase.getUserOfName(userName);
-            if (connectedUser != null) {
-            	isSuccessfulLogin = true;
-            } else {
-            	connectedUser = createNewUser(userName);
-            	isSuccessfulLogin = true;
+        String password = loginFromClientAction.getPassword();
+            try {
+               connectedUser = userDatabase.getUser(login,password);
+                loginTypeResponseFromServer = LoginTypeResponseFromServer.SUCCESSFUL;
+            } catch (NotFoundExeption notFoundExeption) {
+                loginTypeResponseFromServer = LoginTypeResponseFromServer.NOT_FOUND;
+            } catch (IncorrectPasswordExeption incorrectPasswordExeption) {
+                loginTypeResponseFromServer = LoginTypeResponseFromServer.INCORRECT_PASSWORD;
             }
-        }
-        
-        sendResponseToClient(connector);
-    }
-    private User createNewUser(String userName) {
-    	User connectedNewUser = new User();
-    	connectedNewUser.setNameUser(userName);
-    	
-    	int userID = userDatabase.getNextFreeID();
-    	connectedNewUser.setIdUser(userID);
-    	
-    	return connectedNewUser;
-    }
-    
-    public void setUserDatabase(UserDatabase userDatebase) {
-    	this.userDatabase = userDatebase;
+
+        sendResponseToClient(connector, loginTypeResponseFromServer);
     }
 
-
-    private void sendResponseToClient(ClientConnector connector) {
-        LoginServerResponse loginServerResponse = new LoginServerResponse(isSuccessfulLogin);
+    private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer loginTypeResponseFromServer) {
+        LoginServerResponse loginServerResponse = new LoginServerResponse(loginTypeResponseFromServer);
         connector.sendAction(loginServerResponse);
     }
 
-
+    public void setUserDatabase(UserDatabase userDatabase) {
+        this.userDatabase = userDatabase;
+    }
 }

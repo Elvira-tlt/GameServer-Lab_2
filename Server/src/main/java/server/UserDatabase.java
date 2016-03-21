@@ -1,5 +1,8 @@
 package server;
 
+import server.clientActionHandlers.IncorrectPasswordExeption;
+import server.clientActionHandlers.NotFoundExeption;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,25 +31,30 @@ public class UserDatabase {
     	return nextFreeID;
     }
     
-    public User getUserOfName(String nameForSearchUser){
+    public User getUser(String nameForSearchUser, String passwordUser) throws NotFoundExeption, IncorrectPasswordExeption {
     	User userFromDatabase = null;
-    	
+
     	for(User userDatabaseForEquals: identifiedUserInDatabase) {
     		String nameUserFromDatabase = userDatabaseForEquals.getNameUser();
+			String passwordUserFromDatabase = userDatabaseForEquals.getPassword();
     		if(nameForSearchUser.equals(nameUserFromDatabase)){
-    			userFromDatabase = userDatabaseForEquals;
-    			
-    			/////
-    			System.out.println("UserDatabase: user is Found! :)");
-    			//
-    			
+				if (passwordUser.equals(passwordUserFromDatabase)) {
+					userFromDatabase = userDatabaseForEquals;
+					/////
+					System.out.println("UserDatabase: user is Found! :)");
+					//
+				} else {
+					/////
+					System.out.println("UserDatabase: user is Found! PASSWORD NOT SACCESSFUL)");
+					//
+					throw new IncorrectPasswordExeption();
+				}
     			break;
     		}
     	}
+		if (userFromDatabase == null) {
+			throw new NotFoundExeption();
+		}
     	return userFromDatabase;
     }
-    
-    
-
-
 }

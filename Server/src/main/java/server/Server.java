@@ -12,11 +12,7 @@ import actionsFromClient.FreeUsersClientRequest;
 import actionsFromClient.LoginClientRequest;
 import actionsFromClient.PlayersClientRequest;
 import actionsFromServer.ClientActionHandler;
-import server.clientActionHandlers.ExitFromGameRequestHandler;
-import server.clientActionHandlers.ExitRequestHandler;
-import server.clientActionHandlers.FreeUsersRequestHandler;
-import server.clientActionHandlers.LoginRequestHandler;
-import server.clientActionHandlers.PlayersRequestHandler;
+import server.clientActionHandlers.*;
 
 public class Server {
 	public static final int PORT = 8008;
@@ -39,24 +35,27 @@ public class Server {
 	
 	
 	private void prepareActions2HandlersToConnectors() {
-			LoginRequestHandler loginRequestHandler = new LoginRequestHandler();
-			PlayersRequestHandler playersRequestHandler = new PlayersRequestHandler();
-			FreeUsersRequestHandler freeUsersRequestHandler = new FreeUsersRequestHandler();
-			ExitRequestHandler exitRequestHandler = new ExitRequestHandler();
-			ExitFromGameRequestHandler exitFromGameRequestHandler = new ExitFromGameRequestHandler();
+		LoginRequestHandler loginRequestHandler = new LoginRequestHandler();
+		RegistrationRequestHandler registrationRequestHandler = new RegistrationRequestHandler();
+		PlayersRequestHandler playersRequestHandler = new PlayersRequestHandler();
+		FreeUsersRequestHandler freeUsersRequestHandler = new FreeUsersRequestHandler();
+		ExitRequestHandler exitRequestHandler = new ExitRequestHandler();
+		ExitFromGameRequestHandler exitFromGameRequestHandler = new ExitFromGameRequestHandler();
 			
-			//setting other classes to ActionHandlers:
-			loginRequestHandler.setUserDatabase(userDatabase);
-			//TODO
+		//setting other classes to ActionHandlers:
+		loginRequestHandler.setUserDatabase(userDatabase);
+		registrationRequestHandler.setUserDatabase(userDatabase);
+		//TODO
 			
 			
 			
-			//add ActionHandlers to Map actions2Handlers:
-			actions2Handlers.put(LoginClientRequest.class,loginRequestHandler);
-			actions2Handlers.put(PlayersClientRequest.class,playersRequestHandler);
-			actions2Handlers.put(FreeUsersClientRequest.class,freeUsersRequestHandler);
-			actions2Handlers.put(ExitClientRequest.class,exitRequestHandler);
-			actions2Handlers.put(ExitFromGameClientRequest.class,exitFromGameRequestHandler);
+		//add ActionHandlers to Map actions2Handlers:
+		actions2Handlers.put(LoginClientRequest.class,loginRequestHandler);
+		actions2Handlers.put(RegistrationRequestHandler.class, registrationRequestHandler);
+		actions2Handlers.put(PlayersClientRequest.class,playersRequestHandler);
+		actions2Handlers.put(FreeUsersClientRequest.class,freeUsersRequestHandler);
+		actions2Handlers.put(ExitClientRequest.class,exitRequestHandler);
+		actions2Handlers.put(ExitFromGameClientRequest.class,exitFromGameRequestHandler);
 	}
 
 	public void startServer () {

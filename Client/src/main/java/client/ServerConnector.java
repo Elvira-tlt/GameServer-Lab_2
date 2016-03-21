@@ -1,9 +1,5 @@
 package client;
 
-import actionsFromClient.ServerActionHandler;
-import actionsFromServer.*;
-import client.serverActionsHandlers.*;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,6 +9,23 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import actionsFromClient.ServerActionHandler;
+import actionsFromServer.Action;
+import actionsFromServer.ConnectingServerResponse;
+import actionsFromServer.ExitFromGameServerResponse;
+import actionsFromServer.ExitServerResponse;
+import actionsFromServer.FreeUsersServerResponse;
+import actionsFromServer.LoginServerResponse;
+import actionsFromServer.PlayersServerResponse;
+import actionsFromServer.RegistrationServerResponse;
+import client.serverActionsHandlers.ConnectingResponseHandlerClient;
+import client.serverActionsHandlers.ExitFromGameResponseHandlerClient;
+import client.serverActionsHandlers.ExitResponseHandlerClient;
+import client.serverActionsHandlers.FreeUsersResponseHandlerClient;
+import client.serverActionsHandlers.LoginResponseHandlerClient;
+import client.serverActionsHandlers.PlayersResponseHandlerClient;
+import client.serverActionsHandlers.RegistrationResponseHandlerClient;
 
 
 public class ServerConnector extends Thread{
@@ -100,6 +113,7 @@ public class ServerConnector extends Thread{
 
 	private void prepareActionsHandler() {
 		actionsHandlers.put(LoginServerResponse.class, new LoginResponseHandlerClient());
+		actionsHandlers.put(RegistrationServerResponse.class, new RegistrationResponseHandlerClient());
 		actionsHandlers.put(PlayersServerResponse.class,new PlayersResponseHandlerClient());
 		actionsHandlers.put(FreeUsersServerResponse.class,new FreeUsersResponseHandlerClient());
 		actionsHandlers.put(ExitServerResponse.class,new ExitResponseHandlerClient());

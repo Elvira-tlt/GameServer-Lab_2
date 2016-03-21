@@ -1,8 +1,6 @@
 package client;
 
 import actionsFromClient.LoginClientRequest;
-import actionsFromClient.PlayersClientRequest;
-
 
 public class Client {
 	ServerConnector serverConnector = new ServerConnector();
@@ -14,7 +12,7 @@ public class Client {
 	public static void main (String[] args) {
 			Client client = new Client();
 			client.connectingToServer();
-			client.serverConnector.sendToClientConnector(new LoginClientRequest("Vadim"));
+			client.serverConnector.sendToClientConnector(new LoginClientRequest("Vadim","0"));
 	}
 	
 }
