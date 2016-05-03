@@ -1,19 +1,25 @@
 package server.clientActionHandlers;
 
 
-import actionsFromClient.RegistrationClientRequest;
-import actionsFromServer.ClientActionHandler;
-import actionsFromServer.RegistrationServerResponse;
+import requests.RegistrationClientRequest;
+import responses.ClientActionHandler;
+import responses.RegistrationServerResponse;
 import server.ClientConnector;
-import server.User;
+import server.ConnectedUsers;
+import user.User;
 import server.UserDatabase;
 
 public class RegistrationRequestHandler implements ClientActionHandler<RegistrationClientRequest> {
 	private UserDatabase userDatabase;
+	private ConnectedUsers connectedUsers;
 
     @Override
     public void handle(RegistrationClientRequest registrationClientRequest, ClientConnector connector) {
-    	User connectedUser = null;
+          //////
+        System.out.println("IN Registration Server's handler");
+        //////
+
+        User connectedUser = null;
         boolean isSuccessfulRegistration = false;
 
         String login = registrationClientRequest.getLogin();
@@ -22,6 +28,8 @@ public class RegistrationRequestHandler implements ClientActionHandler<Registrat
             connectedUser = createNewUser(login, password);
             userDatabase.addUser(connectedUser);
             isSuccessfulRegistration = true;
+            connector.setUser(connectedUser);
+            connectedUsers.addOnlineUser(connectedUser, connector);
 
         sendResponseToClient(connector, isSuccessfulRegistration);
     }
@@ -40,9 +48,13 @@ public class RegistrationRequestHandler implements ClientActionHandler<Registrat
     public void setUserDatabase(UserDatabase userDatebase) {
     	this.userDatabase = userDatebase;
     }
+    
+    public void setOnlineUsers(ConnectedUsers connectedUsers) {
+        this.connectedUsers = connectedUsers;
+    }
 
     private void sendResponseToClient(ClientConnector connector, boolean responseAboutConnected) {
        RegistrationServerResponse registrationServerResponse = new RegistrationServerResponse(responseAboutConnected);
-        connector.sendAction(registrationServerResponse);
+       connector.sendAction(registrationServerResponse);
     }
 }

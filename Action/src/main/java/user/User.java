@@ -1,9 +1,10 @@
-package server;
+package user;
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
     private String name;
-    private String password; //сделать несериализуемым
+    private String password; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private int idUser;
     private boolean statusPlayer = false;
 

@@ -1,7 +1,7 @@
-package actionsFromClient;
+package requests;
 
 
-import actionsFromServer.Action;
+import responses.Action;
 
 public class LoginClientRequest implements Action {
     private String loginUser;

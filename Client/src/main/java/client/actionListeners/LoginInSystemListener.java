@@ -2,14 +2,12 @@ package client.actionListeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
-import actionsFromClient.LoginClientRequest;
+import requests.LoginClientRequest;
 import client.ServerConnector;
 import client.view.ConnectingWindow;
 import client.view.MainWindow;
-
-import javax.swing.*;
+import client.view.TypeInformationText;
 
 public class LoginInSystemListener implements ActionListener {
 	private ServerConnector serverConnector;
@@ -17,6 +15,7 @@ public class LoginInSystemListener implements ActionListener {
 	private ConnectingWindow loginJFrame;
 	private String loginValue;
 	private String passwordValue;
+	private final String WARN_INFORMATION_ON_LOGIN_FRAME = new String("Поля Логин и пароль обязательно должны быть заполнены.");
 
 	
 	public LoginInSystemListener(MainWindow mainWindow) {
@@ -30,16 +29,13 @@ public class LoginInSystemListener implements ActionListener {
     	loginValue = loginJFrame.getLoginFromField();
     	passwordValue = loginJFrame.getPasswordFromField();
 
-		boolean loginIsNotNull = loginValue != null;
-		boolean passwordIsNotNull = passwordValue != null;
+    	boolean loginIsNotNull = (loginValue != null) && (!loginValue.isEmpty())  ;
+		boolean passwordIsNotNull = (passwordValue != null) && (!passwordValue.isEmpty());
 
 		if (loginIsNotNull && passwordIsNotNull) {
 			sendRequest(loginValue, passwordValue);
 		} else {
-			/////// TODO
-			System.out.println("Поля Логин и пароль обязательно должны быть заполнены:");
-			System.out.println("Login: " + loginValue + "; Password: " + passwordValue);
-			///////
+			loginJFrame.setTextToProcessInformation(TypeInformationText.NEGATIVE, WARN_INFORMATION_ON_LOGIN_FRAME);
 		}
     }
 
@@ -49,7 +45,7 @@ public class LoginInSystemListener implements ActionListener {
 
 		loginJFrame.dispose();
 	}
-    
+
     public void setServerConnector(ServerConnector serverConnector){
     	this.serverConnector = serverConnector;
     }

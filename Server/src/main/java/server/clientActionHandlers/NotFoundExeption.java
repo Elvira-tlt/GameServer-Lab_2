@@ -1,5 +1,7 @@
 package server.clientActionHandlers;
 
-public class NotFoundExeption extends Exception {
+import responses.Action;
+
+public class NotFoundExeption extends Exception implements Action {
 
 }

@@ -1,6 +1,7 @@
 package client.view;
 
-import client.actionListeners.LoginInSystemListener;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,27 +9,20 @@ import javax.swing.border.EmptyBorder;
 public class ConnectingWindow extends JFrame{
     private final String TITLEGAME = "Добро пожаловать!";
     private Box loginMainBox;
-    private JLabel textProcessInWindow = new JLabel("   Пожалуйста, войдите в систему или зарегистрируйтесь!");
-    private JTextField loginField;
-    private JPasswordField passwordField;
+    private JLabel textProcessInWindow = new JLabel("Пожалуйста, войдите в систему или зарегистрируйтесь!");
+    private JTextField loginField = new JTextField();
+    private JPasswordField passwordField = new JPasswordField();
     private JButton buttonLogin;
     private JButton buttonRegistration;
 
-    
-    
     public ConnectingWindow(){
-    	add(textProcessInWindow);
+        prepareElementLoginPanel();
+    	pack();
         setSize(400, 250);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
         setTitle(TITLEGAME);
         setLocationRelativeTo(null);
         setResizable(false);
-    }
-    
-    public void displayWindow() {
-    	createLoginPanel();
-    	add(textProcessInWindow);
     }
     
     public String getLoginFromField() {
@@ -41,36 +35,47 @@ public class ConnectingWindow extends JFrame{
         StringBuffer textPasswordField = new StringBuffer();
     	char[] password = passwordField.getPassword();
         textPasswordField.append(password);
-
         passwordFromField = textPasswordField.toString();
         return passwordFromField;
     }
 
-    public void setLoginListenerToButtonLogin(LoginInSystemListener listener){
-        ////
-        System.out.println("set Listener to button: " + listener);
-        //
+    public void setListenerToButtonLogin(ActionListener listener){
         buttonLogin.addActionListener(listener);
     }
 
-    public JButton getButtonRegistration(){
-        return buttonRegistration;
+    public void setListenerToButtonRegistration(ActionListener listener){
+        buttonRegistration.addActionListener(listener);;
+    }
+    
+    public void setTextToProcessInformation(TypeInformationText typeInformationText, String textToProcessInformation){
+        Color colorText = Color.BLACK;
+        textProcessInWindow.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+        if(typeInformationText == TypeInformationText.POSITIVE) {
+            textProcessInWindow.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        } else {
+            colorText = Color.red;
+
+        }
+        textProcessInWindow.setText(textToProcessInformation);
+        textProcessInWindow.setForeground(colorText);
     }
 
-
-
-    private void createLoginPanel() {
+    private void prepareElementLoginPanel() {
         loginMainBox = Box.createVerticalBox();
         Box boxLogin = Box.createHorizontalBox();
         Box boxPassword = Box.createHorizontalBox();
         Box boxButton = Box.createHorizontalBox();
+        Box boxText = Box.createHorizontalBox();
 
         JLabel loginLabel = new JLabel("Логин:");
         JLabel passwordLabel = new JLabel("Пароль:");
-        loginField = new JTextField();
-        passwordField = new JPasswordField();
+
         buttonLogin = new JButton("Войти");
         buttonRegistration = new JButton("Зарегистрироваться");
+
+        boxText.add(Box.createHorizontalStrut(15));
+        boxText.add(textProcessInWindow);
+        boxText.add(Box.createVerticalStrut(30));
 
         boxLogin.add(loginLabel);
         boxLogin.add(Box.createHorizontalStrut(6));
@@ -84,20 +89,21 @@ public class ConnectingWindow extends JFrame{
         boxButton.add(buttonLogin);
         boxButton.add(Box.createHorizontalStrut(12));
         boxButton.add(buttonRegistration);
+        boxButton.add(Box.createVerticalStrut(70));
 
         loginLabel.setPreferredSize(passwordLabel.getPreferredSize());
 
         loginMainBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+        loginMainBox.add(boxText);
         loginMainBox.add(boxLogin);
         loginMainBox.add(boxPassword);
         loginMainBox.add(boxButton);
-        loginMainBox.setSize(350, 100);
 
         setContentPane(loginMainBox);
+
     }
 
     public static void main(String[] args) {
         ConnectingWindow window = new ConnectingWindow();
-        window.displayWindow();
     }
 }

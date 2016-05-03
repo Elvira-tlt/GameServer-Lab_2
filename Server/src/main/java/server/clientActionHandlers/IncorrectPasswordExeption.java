@@ -1,5 +1,7 @@
 package server.clientActionHandlers;
 
-public class IncorrectPasswordExeption extends Exception {
+import responses.Action;
+
+public class IncorrectPasswordExeption extends Exception implements Action  {
 
 }

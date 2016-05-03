@@ -1,8 +1,8 @@
 package server.clientActionHandlers;
 
 
-import actionsFromClient.ExitFromGameClientRequest;
-import actionsFromServer.ClientActionHandler;
+import requests.ExitFromGameClientRequest;
+import responses.ClientActionHandler;
 import server.ClientConnector;
 
 public class ExitFromGameRequestHandler implements ClientActionHandler<ExitFromGameClientRequest> {

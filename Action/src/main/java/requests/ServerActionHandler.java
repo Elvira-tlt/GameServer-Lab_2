@@ -1,7 +1,7 @@
-package actionsFromClient;
+package requests;
 
 
-import actionsFromServer.Action;
+import responses.Action;
 import server.ClientConnector;
 
 public interface ServerActionHandler<ActionClass extends Action> {

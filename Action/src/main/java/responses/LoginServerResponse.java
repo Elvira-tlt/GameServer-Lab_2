@@ -1,4 +1,4 @@
-package actionsFromServer;
+package responses;
 
 
 

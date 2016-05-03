@@ -10,22 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import actionsFromClient.ServerActionHandler;
-import actionsFromServer.Action;
-import actionsFromServer.ConnectingServerResponse;
-import actionsFromServer.ExitFromGameServerResponse;
-import actionsFromServer.ExitServerResponse;
-import actionsFromServer.FreeUsersServerResponse;
-import actionsFromServer.LoginServerResponse;
-import actionsFromServer.PlayersServerResponse;
-import actionsFromServer.RegistrationServerResponse;
-import client.serverActionsHandlers.ConnectingResponseHandlerClient;
-import client.serverActionsHandlers.ExitFromGameResponseHandlerClient;
-import client.serverActionsHandlers.ExitResponseHandlerClient;
-import client.serverActionsHandlers.FreeUsersResponseHandlerClient;
-import client.serverActionsHandlers.LoginResponseHandlerClient;
-import client.serverActionsHandlers.PlayersResponseHandlerClient;
-import client.serverActionsHandlers.RegistrationResponseHandlerClient;
+import requests.ServerActionHandler;
+import responses.Action;
+import user.User;
 
 
 public class ServerConnector extends Thread{
@@ -36,16 +23,15 @@ public class ServerConnector extends Thread{
 	private ObjectInputStream fromServer;
 	private ObjectOutputStream toServer;
 
-	private Map<Class, ServerActionHandler> actionsHandlers = new HashMap<>();
+	private Map<Class, ServerActionHandler> actions2Handlers = new HashMap<>();
 
 	private boolean isConnectedToServer = false;
 
 	public void run() {
-		prepareActionsHandler();
 		connectingToServer();
 		listeningClientConnector();
 	}
-
+	
 	private void connectingToServer() {
 		try {
 			InetAddress inetAdress = InetAddress.getByName(SERVER_ADDRESS);
@@ -70,22 +56,24 @@ public class ServerConnector extends Thread{
 	private void listeningClientConnector() {
 		try {
 			while(true) {
-				Action actionResponseFromServer = (Action) fromServer.readObject();
+				Action actionResponse = (Action) fromServer.readObject();
 
 				////////////
-				System.out.println("	Client: Action recive");
+				System.out.println("	Client: recive actionResponse -" + actionResponse);
 				///////////
 
-				handleActions(actionResponseFromServer);
+				handleActions(actionResponse);
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setActions2Handlers(Map<Class, ServerActionHandler> actions2Handlers) {
+		this.actions2Handlers = actions2Handlers;
 	}
 
 	public void sendToClientConnector(Action actionRequest) {
@@ -101,29 +89,17 @@ public class ServerConnector extends Thread{
 				}
 			}
 
-			////////////
-			System.out.println("	Client: actionRequest" + actionRequest + "\nAction send is successful");
-			///////////
-
 		} catch (IOException |InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void prepareActionsHandler() {
-		actionsHandlers.put(LoginServerResponse.class, new LoginResponseHandlerClient());
-		actionsHandlers.put(RegistrationServerResponse.class, new RegistrationResponseHandlerClient());
-		actionsHandlers.put(PlayersServerResponse.class,new PlayersResponseHandlerClient());
-		actionsHandlers.put(FreeUsersServerResponse.class,new FreeUsersResponseHandlerClient());
-		actionsHandlers.put(ExitServerResponse.class,new ExitResponseHandlerClient());
-		actionsHandlers.put(ExitFromGameServerResponse.class,new ExitFromGameResponseHandlerClient());
-		actionsHandlers.put(ConnectingServerResponse.class, new ConnectingResponseHandlerClient());
-	}
+		
 
 	private void handleActions(Action actionFromServer) {
 		Class actionFromServerClass = actionFromServer.getClass();
-		Set<Map.Entry<Class, ServerActionHandler>> entreiesActionsHandlers = actionsHandlers.entrySet();
+		Set<Map.Entry<Class, ServerActionHandler>> entreiesActionsHandlers = actions2Handlers.entrySet();
 		for (Map.Entry<Class, ServerActionHandler> entry: entreiesActionsHandlers) {
 			if (entry.getKey().equals(actionFromServerClass)) {
 				ServerActionHandler handlerAction = entry.getValue();

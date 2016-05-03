@@ -1,19 +1,21 @@
 package server.clientActionHandlers;
 
 
-import actionsFromServer.LoginTypeResponseFromServer;
+import requests.LoginClientRequest;
+import responses.ClientActionHandler;
+import responses.LoginServerResponse;
+import responses.LoginTypeResponseFromServer;
 import server.ClientConnector;
-import server.User;
+import user.User;
 import server.UserDatabase;
-import actionsFromClient.LoginClientRequest;
-import actionsFromServer.ClientActionHandler;
-import actionsFromServer.LoginServerResponse;
+import server.ConnectedUsers;
 
 public class LoginRequestHandler implements ClientActionHandler<LoginClientRequest> {
 	private UserDatabase userDatabase;
+	private ConnectedUsers connectedUsers;
 
     @Override
-    public void handle(LoginClientRequest loginFromClientAction, ClientConnector connector) {
+    public void handle(LoginClientRequest loginFromClientAction, ClientConnector clientConnector) {
     	User connectedUser = null;
         LoginTypeResponseFromServer loginTypeResponseFromServer;
 
@@ -21,14 +23,18 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
         String password = loginFromClientAction.getPassword();
             try {
                connectedUser = userDatabase.getUser(login,password);
-                loginTypeResponseFromServer = LoginTypeResponseFromServer.SUCCESSFUL;
+               loginTypeResponseFromServer = LoginTypeResponseFromServer.SUCCESSFUL;
+               clientConnector.setUser(connectedUser);
+               connectedUsers.addOnlineUser(connectedUser, clientConnector);
+               
+               
             } catch (NotFoundExeption notFoundExeption) {
                 loginTypeResponseFromServer = LoginTypeResponseFromServer.NOT_FOUND;
             } catch (IncorrectPasswordExeption incorrectPasswordExeption) {
                 loginTypeResponseFromServer = LoginTypeResponseFromServer.INCORRECT_PASSWORD;
             }
 
-        sendResponseToClient(connector, loginTypeResponseFromServer);
+        sendResponseToClient(clientConnector, loginTypeResponseFromServer);
     }
 
     private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer loginTypeResponseFromServer) {
@@ -39,4 +45,10 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
     public void setUserDatabase(UserDatabase userDatabase) {
         this.userDatabase = userDatabase;
     }
+    
+    public void setConnectingUsers(ConnectedUsers connectedUsers) {
+        this.connectedUsers = connectedUsers;
+    }
+
+
 }
