@@ -1,4 +1,4 @@
-package responses;
+package server;
 
 
 import responses.Action;

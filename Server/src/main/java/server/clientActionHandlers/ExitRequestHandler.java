@@ -2,7 +2,7 @@ package server.clientActionHandlers;
 
 
 import requests.ExitClientRequest;
-import responses.ClientActionHandler;
+import server.ClientActionHandler;
 import server.ClientConnector;
 import server.ConnectedUsers;
 import user.User;

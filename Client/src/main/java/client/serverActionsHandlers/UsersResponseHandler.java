@@ -40,10 +40,6 @@ public class UsersResponseHandler implements ServerActionHandler<UsersServerResp
         	}
         }
         
-        //
-        System.out.println("players: " + players);
-        System.out.println("free users: " + freeUsers);
-        //
     }
     
 	public void setPanelOnlineUsers(PanelOnlineUsers panelOnlineUsers) {

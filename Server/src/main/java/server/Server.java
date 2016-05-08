@@ -7,11 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import requests.*;
-import responses.ClientActionHandler;
 import server.clientActionHandlers.*;
 
 public class Server {
-	public static final int PORT = 8008;
+	public static final int PORT = 8001;
 	//private Socket socket;
 	private int countConnecting;
 	private Map<Class, ClientActionHandler> actions2Handlers = new HashMap<>();

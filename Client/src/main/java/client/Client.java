@@ -5,12 +5,7 @@ import java.util.Map;
 
 import client.serverActionsHandlers.*;
 import requests.ServerActionHandler;
-import responses.ConnectingServerResponse;
-import responses.ExitFromGameServerResponse;
-import responses.ExitServerResponse;
-import responses.LoginServerResponse;
-import responses.UsersServerResponse;
-import responses.RegistrationServerResponse;
+import responses.*;
 import client.view.MainWindow;
 
 public class Client {
@@ -33,6 +28,7 @@ public class Client {
 		LoginResponseHandler loginResponseHandlerClient = new LoginResponseHandler();
 		RegistrationResponseHandler registrationResponseHandlerClient = new RegistrationResponseHandler();
 		UsersResponseHandler usersResponseHandler = new UsersResponseHandler();
+
 		
 		
 		//setting other classes to
@@ -49,6 +45,7 @@ public class Client {
 		actions2Handlers.put(ExitServerResponse.class,new ExitResponseHandler());
 		actions2Handlers.put(ExitFromGameServerResponse.class,new ExitFromGameResponseHandler());
 		actions2Handlers.put(ConnectingServerResponse.class, new ConnectingResponseHandler());
+		actions2Handlers.put(MoveGameResponse.class, new MoveGameResponseHandler());
 		
 		return actions2Handlers;
 	}

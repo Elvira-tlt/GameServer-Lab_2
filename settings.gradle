@@ -1,0 +1,8 @@
+rootProject.name = 'GameServer_Lab2'
+
+include 'Server'
+
+include 'Client'
+
+include 'Common'
+

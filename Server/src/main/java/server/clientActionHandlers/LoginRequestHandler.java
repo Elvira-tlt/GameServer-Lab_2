@@ -2,7 +2,7 @@ package server.clientActionHandlers;
 
 
 import requests.LoginClientRequest;
-import responses.ClientActionHandler;
+import server.ClientActionHandler;
 import responses.LoginServerResponse;
 import responses.LoginTypeResponseFromServer;
 import server.ClientConnector;

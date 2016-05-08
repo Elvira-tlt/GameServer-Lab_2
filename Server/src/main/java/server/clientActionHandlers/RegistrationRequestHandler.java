@@ -2,7 +2,7 @@ package server.clientActionHandlers;
 
 
 import requests.RegistrationClientRequest;
-import responses.ClientActionHandler;
+import server.ClientActionHandler;
 import responses.RegistrationServerResponse;
 import server.ClientConnector;
 import server.ConnectedUsers;

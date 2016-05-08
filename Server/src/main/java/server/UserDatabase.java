@@ -23,8 +23,14 @@ public class UserDatabase {
 		User user1 = new User();
 		user1.setNameUser(login);
 		user1.setPasswordUser(password);
-		
 		identifiedUsersInDatabase.add(user1);
+		
+		login = "2";
+		password = "2";
+		User user2 = new User();
+		user2.setNameUser(login);
+		user2.setPasswordUser(password);
+		identifiedUsersInDatabase.add(user2);
 	}
 	
 	private int countUsers =

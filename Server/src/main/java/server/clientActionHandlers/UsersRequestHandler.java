@@ -3,7 +3,7 @@ package server.clientActionHandlers;
 
 
 import requests.UsersClientRequest;
-import responses.ClientActionHandler;
+import server.ClientActionHandler;
 import responses.UsersServerResponse;
 import server.ClientConnector;
 import server.ConnectedUsers;

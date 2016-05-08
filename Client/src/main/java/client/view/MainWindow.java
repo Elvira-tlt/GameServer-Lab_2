@@ -16,12 +16,14 @@ import javax.swing.*;
 
 public class MainWindow extends JFrame{
 	private final String TITLEGAME = "Игра \"Морской бой\"";
+
 	
 	private ConnectingWindow connectingWindow = new ConnectingWindow();
     private PanelOnlineUsers panelOnlineUsers = new PanelOnlineUsers();
-    private JPanel gamePanel = new JPanel();
-    private JPanel panelIdentificationClient;
+    private GamePanel gamePanel = new GamePanel();
     private JSplitPane splitMain = new JSplitPane();
+
+
     
     private ServerConnector serverConnector;
     
@@ -46,10 +48,6 @@ public class MainWindow extends JFrame{
     
     public void displayWindow(){
     	prepareMainWindowElements();
-        panelOnlineUsers.display();
-        panelOnlineUsers.updatePanelOnlineUser();
-
-        SwingUtilities.updateComponentTreeUI(this);
     }
 
     public void displayStartWindow(){
@@ -57,7 +55,6 @@ public class MainWindow extends JFrame{
     }
 
     public void displayConnectingWindow() {
-        
         connectingWindow.setAlwaysOnTop(true);
         connectingWindow.setVisible(true);
     }
@@ -70,7 +67,7 @@ public class MainWindow extends JFrame{
         splitMain.setRightComponent(panelOnlineUsers);
         splitMain.setLeftComponent(gamePanel);
 
-        Dimension minimumSize = new Dimension(620, 650);
+        Dimension minimumSize = new Dimension(500, 650);
         splitMain.getLeftComponent().setMinimumSize(minimumSize);
         splitMain.setResizeWeight(1.0);
         splitMain.setSize(900, 650);
@@ -96,7 +93,6 @@ public class MainWindow extends JFrame{
     }
     
     public PanelOnlineUsers getPanelOnlineUsers(){
-    	System.out.println("return panel:" + panelOnlineUsers);
     	return panelOnlineUsers;
     }
     
@@ -105,7 +101,4 @@ public class MainWindow extends JFrame{
           serverConnector.sendToClientConnector(new ExitClientRequest());
         }
     };
-    
-   
-    
 }

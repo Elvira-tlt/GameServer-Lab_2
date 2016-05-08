@@ -16,7 +16,7 @@ import user.User;
 
 
 public class ServerConnector extends Thread{
-	private static final int SERVER_PORT = 8008;
+	private static final int SERVER_PORT = 8001;
 	private static final String SERVER_ADDRESS = "127.0.0.1";
 
 	private Socket socket;
