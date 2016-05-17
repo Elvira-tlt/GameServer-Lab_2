@@ -7,19 +7,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import requests.*;
+import responses.StartGameResponse;
 import server.clientActionHandlers.*;
+import server.game.GameRepository;
 
 public class Server {
-	public static final int PORT = 8001;
-	//private Socket socket;
-	private int countConnecting;
+	public static final int PORT = 8008;
 	private Map<Class, ClientActionHandler> actions2Handlers = new HashMap<>();
 	private UserDatabase userDatabase;
 	private ConnectedUsers connectedUsers;
+	private GameRepository gameRepository;
 
 	public Server() {
 		userDatabase = new UserDatabase();
 		connectedUsers = new ConnectedUsers();
+		gameRepository = new GameRepository();
 		prepareActions2HandlersToConnectors();
 	}
 
@@ -38,6 +40,7 @@ public class Server {
 		UsersRequestHandler usersRequestHandler = new UsersRequestHandler();
 		ExitRequestHandler exitRequestHandler = new ExitRequestHandler();
 		ExitFromGameRequestHandler exitFromGameRequestHandler = new ExitFromGameRequestHandler();
+		StartGameRequestHandler startGameRequestHandler = new StartGameRequestHandler();
 			
 		//setting other classes to ActionHandlers:
 		loginRequestHandler.setUserDatabase(userDatabase);
@@ -45,6 +48,8 @@ public class Server {
 		registrationRequestHandler.setUserDatabase(userDatabase);
 		registrationRequestHandler.setOnlineUsers(connectedUsers);
 		usersRequestHandler.setOnlineUsers(connectedUsers);
+		startGameRequestHandler.setConnectedUsers(connectedUsers);
+		startGameRequestHandler.setGameRepository(gameRepository);
 
 		exitRequestHandler.setConnectedUsers(connectedUsers);
 		
@@ -58,6 +63,7 @@ public class Server {
 		actions2Handlers.put(UsersClientRequest.class,usersRequestHandler);
 		actions2Handlers.put(ExitClientRequest.class,exitRequestHandler);
 		actions2Handlers.put(ExitFromGameClientRequest.class,exitFromGameRequestHandler);
+		actions2Handlers.put(StartGameRequest.class, startGameRequestHandler);
 	}
 
 	public void startServer () {
@@ -76,7 +82,7 @@ public class Server {
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("�� ������� ��������� ������");
+			System.out.println("Не удалось запустить сервер");
 			e.printStackTrace();
 		}
 	}

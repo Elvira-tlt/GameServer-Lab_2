@@ -16,7 +16,7 @@ import user.User;
 
 
 public class ServerConnector extends Thread{
-	private static final int SERVER_PORT = 8001;
+	private static final int SERVER_PORT = 8008;
 	private static final String SERVER_ADDRESS = "127.0.0.1";
 
 	private Socket socket;
@@ -86,6 +86,12 @@ public class ServerConnector extends Thread{
 					toServer.writeObject(actionRequest);
 					toServer.flush();
 					isNotSendedAction = true;
+					
+					///
+					System.out.println("	Client: send actionRequest -" + actionRequest);
+					//
+					
+					
 				}
 			}
 
@@ -103,9 +109,6 @@ public class ServerConnector extends Thread{
 		for (Map.Entry<Class, ServerActionHandler> entry: entreiesActionsHandlers) {
 			if (entry.getKey().equals(actionFromServerClass)) {
 				ServerActionHandler handlerAction = entry.getValue();
-				
-				////!!!!!!!!!!!! ��������, ��� ������ � ��������� Connector-�(client � server)
-				// � ServerActionHandler
 				handlerAction.handle(actionFromServer);
 			}
 		}

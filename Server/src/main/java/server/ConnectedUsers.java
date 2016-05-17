@@ -38,12 +38,32 @@ public class ConnectedUsers {
 	}
 
 	private void sendActionAllConnectedUsers(){
+			UsersServerResponse connectedUsersResponse;
 			Collection<ClientConnector> clientConnectors = onlineUsersToConnector.values();
-
 			List<User> allConnectedUsers = getOnlineUsersToConnector();
-			UsersServerResponse connectedUsersResponse = new UsersServerResponse(allConnectedUsers);
+			
 			for(ClientConnector clientConnector: clientConnectors) {
+				List<User> allConnectedUsersWithoutThisUser = new ArrayList<User>();
+				allConnectedUsersWithoutThisUser.addAll(allConnectedUsers);
+				User thisUser = clientConnector.getConnectedUser();
+				allConnectedUsersWithoutThisUser.remove(thisUser);
+				connectedUsersResponse = new UsersServerResponse(allConnectedUsersWithoutThisUser);
 				clientConnector.sendAction(connectedUsersResponse);
+				
 		}
 	}
+	
+	public ClientConnector getClientConnectorByUser(User user){
+		ClientConnector clientConnectorThisUser = onlineUsersToConnector.get(user);
+		onlineUsersToConnector.get(user);
+		return clientConnectorThisUser;
+	}
+	
+	/*public User getRundomSelectedOnlineUser(User notThisUser){
+		User randomSelectedUser;
+		List<User> freeUsers
+		
+		return randomSelectedUser;
+	}*/
+	
 }

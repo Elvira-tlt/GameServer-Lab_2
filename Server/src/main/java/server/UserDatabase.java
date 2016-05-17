@@ -13,21 +13,21 @@ public class UserDatabase {
 	public UserDatabase(){
 		String login = "1";
 		String password = "1";
-		User user = new User();
+		User user = new User(00);
 		user.setNameUser(login);
 		user.setPasswordUser(password);
 		identifiedUsersInDatabase.add(user);
 
 		login = "пп";
 		password = "пп";
-		User user1 = new User();
+		User user1 = new User(02);
 		user1.setNameUser(login);
 		user1.setPasswordUser(password);
 		identifiedUsersInDatabase.add(user1);
 		
 		login = "2";
 		password = "2";
-		User user2 = new User();
+		User user2 = new User(01);
 		user2.setNameUser(login);
 		user2.setPasswordUser(password);
 		identifiedUsersInDatabase.add(user2);
@@ -41,10 +41,6 @@ public class UserDatabase {
         identifiedUsersInDatabase.add(user);
         
         countUsers++;
-        
-        /////////
-        System.out.println("countUser: " + countUsers);
-        ////
     }
 
    public List<User> getIdentidiedUsers() {
@@ -67,11 +63,11 @@ public class UserDatabase {
 				if (passwordUser.equals(passwordUserFromDatabase)) {
 					userFromDatabase = userDatabaseForEquals;
 					/////
-					System.out.println("UserDatabase: user is Found! :)");
+					//System.out.println("UserDatabase: user is Found! :)");
 					//
 				} else {
 					/////
-					System.out.println("UserDatabase: user is Found! PASSWORD NOT SACCESSFUL)");
+					//System.out.println("UserDatabase: user is Found! PASSWORD NOT SACCESSFUL)");
 					//
 					throw new IncorrectPasswordExeption();
 				}

@@ -8,6 +8,7 @@ import javax.swing.event.TableModelListener;
 import user.User;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +19,7 @@ public class PanelOnlineUsers extends JPanel {
 	private final int HEIGHT_ROWS_TABLES = 25;
 	private final Dimension MINIMUM_PANEL_SIZE = new Dimension(265, 650);
 	private final Dimension MAXIMUM_PANEL_SIZE = new Dimension(280, 650);
-	private final Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(265, 450);
+	private final Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(240, 450);
 	private final String TEXT_TO_BUTTON_PLAY= "<html> Выберите соперника для игры и нажмите <br> 'начать игру'   "+
 			"Если соперник не выбран,<br> то  он будет выбран случайным образом </html> ";
 	private final String NAME_BUTTON_PLAY = "Начать игру";
@@ -45,7 +46,6 @@ public class PanelOnlineUsers extends JPanel {
 		prepareElements();
 		tableFreeUsers.setPreferredSize(MINIMUM_PANEL_ONLINE_USERS_SIZE);
 		tablePlayers.setPreferredSize(MINIMUM_PANEL_ONLINE_USERS_SIZE);
-		panelButton.setLayout(new GridLayout(2,1));
 
 		setMinimumSize(MINIMUM_PANEL_SIZE);
 		setMaximumSize(MAXIMUM_PANEL_SIZE);
@@ -93,8 +93,10 @@ public class PanelOnlineUsers extends JPanel {
 		tabedOnlineUsers.addTab("Free users", panelFreeUsers);
 		tabedOnlineUsers.addTab("Players", panelPlayers);
 
-		//panelButton.setLayout(new GridLayout(2,1));
-		//panelButton.setLayout(new BorderLayout());
+		Color colorButton = new Color(128, 228, 101);
+		panelButton.setLayout(new GridLayout(2, 1));
+		playButton.setBackground(colorButton);
+		playButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		panelButton.add(textToButton);
 		panelButton.add(playButton);
 
@@ -103,4 +105,20 @@ public class PanelOnlineUsers extends JPanel {
 		add(tabedOnlineUsers);
 		add(panelButton, BorderLayout.SOUTH);
 	}
+	
+	public List<User> getFreeUsersList() {
+		return freeUsersList;
+	}
+
+	public TableModelOnlineUsers getTableModelFreeUsers() {
+		return tableModelFreeUsers;
+	}
+
+	public JTable getTableFreeUsers() {
+		return tableFreeUsers;
+	}
+	
+	 public void setListenerToPlayButton(ActionListener listener){
+	        playButton.addActionListener(listener);;
+	    }
 }

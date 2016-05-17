@@ -35,13 +35,10 @@ public class RegistrationRequestHandler implements ClientActionHandler<Registrat
     }
 
     private User createNewUser(String userName, String passwordUser) {
-    	User connectedNewUser = new User();
+    	int userID = userDatabase.getNextFreeID();
+    	User connectedNewUser = new User(userID);
     	connectedNewUser.setNameUser(userName);
         connectedNewUser.setPasswordUser(passwordUser);
-    	
-    	int userID = userDatabase.getNextFreeID();
-    	connectedNewUser.setIdUser(userID);
-    	
     	return connectedNewUser;
     }
     

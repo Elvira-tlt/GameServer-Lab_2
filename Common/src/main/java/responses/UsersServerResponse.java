@@ -6,12 +6,16 @@ import user.User;
 
 public class UsersServerResponse implements Action {
 	private List<User> users;
-
-    public UsersServerResponse(List<User> onlineUsers) {
-        this.users = onlineUsers;
+	
+	public UsersServerResponse (List<User> onlineUsers){
+    	 this.users = onlineUsers;
     }
-
+	
     public List<User> getOnlineUsers() {
         return users;
     }
+    
+    
+    
+    
 }

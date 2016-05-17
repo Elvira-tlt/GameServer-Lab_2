@@ -1,7 +1,16 @@
 package responses;
 
 
+
 public class StartGameResponse implements Action {
-	//TODO
+    private String currentPlayerName;
+    private String otherPlayerName;
+
+    public  StartGameResponse(String currentPlayerName, String otherPlayerName){
+        this.currentPlayerName = currentPlayerName;
+        this.otherPlayerName = otherPlayerName;
+    }
+
+
 	
 }

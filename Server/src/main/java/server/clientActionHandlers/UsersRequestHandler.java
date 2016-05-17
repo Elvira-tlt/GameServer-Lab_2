@@ -18,8 +18,10 @@ public class UsersRequestHandler implements ClientActionHandler<UsersClientReque
     @Override
     public void handle(UsersClientRequest playersRequest, ClientConnector connector) {
     	List<User> onlineUsers = connectedUsers.getOnlineUsersToConnector();
+    	User userForRequest = connector.getConnectedUser();
+    	//remove this user before send list online users to him:
+    	onlineUsers.remove(userForRequest);
     	UsersServerResponse response = new UsersServerResponse(onlineUsers);
-    	
     	connector.sendAction(response);
     }
     

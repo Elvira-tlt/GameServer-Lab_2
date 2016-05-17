@@ -9,6 +9,7 @@ import java.awt.event.WindowListener;
 import client.ServerConnector;
 import client.actionListeners.LoginInSystemListener;
 import client.actionListeners.RegistrationInSystemListener;
+import client.actionListeners.StartedGameListener;
 import requests.ExitClientRequest;
 
 import javax.jws.Oneway;
@@ -20,21 +21,23 @@ public class MainWindow extends JFrame{
 	
 	private ConnectingWindow connectingWindow = new ConnectingWindow();
     private PanelOnlineUsers panelOnlineUsers = new PanelOnlineUsers();
+
     private GamePanel gamePanel = new GamePanel();
+
     private JSplitPane splitMain = new JSplitPane();
-
-
-    
     private ServerConnector serverConnector;
-    
+
+
+
     private LoginInSystemListener loginInSystemListener;
+
     private RegistrationInSystemListener registrationInSystemListener;
-    
+    private StartedGameListener startGameListener;
     public MainWindow(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
 
         createListeners();
-        prepareConnectingWindow();
+        addListenersTo();
 
         setSize(900, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -43,9 +46,9 @@ public class MainWindow extends JFrame{
         setLocationRelativeTo(null);
         setResizable(true);
         setVisible(true);
-        
+
 	}
-    
+
     public void displayWindow(){
     	prepareMainWindowElements();
     }
@@ -58,16 +61,16 @@ public class MainWindow extends JFrame{
         connectingWindow.setAlwaysOnTop(true);
         connectingWindow.setVisible(true);
     }
-    
+
     public ConnectingWindow getLoginJFrame(){
         return connectingWindow;
     }
-    
+
     private void prepareMainWindowElements(){
         splitMain.setRightComponent(panelOnlineUsers);
         splitMain.setLeftComponent(gamePanel);
 
-        Dimension minimumSize = new Dimension(500, 650);
+        Dimension minimumSize = new Dimension(550, 650);
         splitMain.getLeftComponent().setMinimumSize(minimumSize);
         splitMain.setResizeWeight(1.0);
         splitMain.setSize(900, 650);
@@ -76,26 +79,33 @@ public class MainWindow extends JFrame{
         add(splitMain);
     }
 
-    private void prepareConnectingWindow(){
+    private void addListenersTo(){
         connectingWindow.setListenerToButtonLogin(loginInSystemListener);
         connectingWindow.setListenerToButtonRegistration(registrationInSystemListener);
+        panelOnlineUsers.setListenerToPlayButton(startGameListener);
     }
 
     private void createListeners(){
         //TODO
         loginInSystemListener = new LoginInSystemListener(this);
         registrationInSystemListener = new RegistrationInSystemListener(this);
+        startGameListener = new StartedGameListener();
 
         //setting serverConnector to ActionListener
         loginInSystemListener.setServerConnector(serverConnector);
         registrationInSystemListener.setServerConnector(serverConnector);
-
+        startGameListener.setServerConnector(serverConnector);
+        startGameListener.setPanelOnlineUsers(panelOnlineUsers);
     }
-    
+
     public PanelOnlineUsers getPanelOnlineUsers(){
     	return panelOnlineUsers;
     }
-    
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
+    }
+
     private WindowListener closingProgram = new java.awt.event.WindowAdapter() {
         public void windowClosing(java.awt.event.WindowEvent evt) {
           serverConnector.sendToClientConnector(new ExitClientRequest());

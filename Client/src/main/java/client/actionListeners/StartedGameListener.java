@@ -1,51 +1,68 @@
 package client.actionListeners;
 
 import client.ServerConnector;
-import client.view.ConnectingWindow;
-import client.view.MainWindow;
-import client.view.TypeInformationText;
-import requests.RegistrationClientRequest;
+import client.view.PanelOnlineUsers;
+import client.view.TableModelOnlineUsers;
+import requests.StartGameRequest;
+import user.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.JTable;
 
 public class StartedGameListener implements ActionListener {
 	private ServerConnector serverConnector;
-	private MainWindow mainWindow;
-	private ConnectingWindow loginJFrame;
-	private String loginValue;
-	private String passwordValue;
-	private final String WARN_INFORMATION_ON_LOGIN_FRAME = new String("Поля Логин и пароль обязательно должны быть заполнены.");
+	private TableModelOnlineUsers tableModelFreeUsers;
+	private JTable tableFreeUsers;
+	private User rival;
+	private PanelOnlineUsers panelOnlineUsers;
+	private boolean rivalIsSelected;
 
-	public StartedGameListener(MainWindow mainWindow) {
-		this.mainWindow = mainWindow;
-	}
-	
-    @Override
+	@Override
     public void actionPerformed(ActionEvent e) {
-    	loginJFrame = mainWindow.getLoginJFrame();
-    	loginValue = loginJFrame.getLoginFromField();
-    	passwordValue = loginJFrame.getPasswordFromField();
-    	
-		boolean loginIsNotNull = (loginValue != null) && (!loginValue.isEmpty())  ;
-		boolean passwordIsNotNull = (passwordValue != null) && (!passwordValue.isEmpty());
+		int indexNumberSelectedUser = tableFreeUsers.getSelectedRow();
+		rivalIsSelected = indexNumberSelectedUser >=0;
+		
+		if(rivalIsSelected) {
+			List<User> freeUsers = panelOnlineUsers.getFreeUsersList();
+			rival = freeUsers.get(indexNumberSelectedUser);
 
-		if (loginIsNotNull && passwordIsNotNull) {
-			sendRequest(loginValue, passwordValue);
+			///
+			System.out.println("free users: " + freeUsers);
+			System.out.println("SELECTED RIVAL: " + rival.getNameUser() + "User: " + rival);
+			//
+
 		} else {
-			loginJFrame.setTextToProcessInformation(TypeInformationText.NEGATIVE, WARN_INFORMATION_ON_LOGIN_FRAME);
+			//TODO
+			randomSelectedRival();
+			//
+			System.out.println("SELECTED RANDOM RIVAL: " + rival.getNameUser());
+			//
 		}
-    }
-
-	private void sendRequest(String loginValue, String passwordValue){
-		RegistrationClientRequest registrationRequest = new RegistrationClientRequest(loginValue, passwordValue);
-		serverConnector.sendToClientConnector(registrationRequest);
+		
+		sendRequest(rival);
 
 		
-		loginJFrame.dispose();
+    }
+
+	private void sendRequest(User otherUser){
+		StartGameRequest startGameRequest = new StartGameRequest(rival);
+		serverConnector.sendToClientConnector(startGameRequest);
 	}
     
     public void setServerConnector(ServerConnector serverConnector){
     	this.serverConnector = serverConnector;
+    }
+    
+    public void setPanelOnlineUsers(PanelOnlineUsers panelOnlineUsers) {
+		this.panelOnlineUsers = panelOnlineUsers;
+		this.tableFreeUsers = panelOnlineUsers.getTableFreeUsers();
+		this.tableModelFreeUsers = panelOnlineUsers.getTableModelFreeUsers();
+	}
+    
+    private void randomSelectedRival(){
+    	//TODO
     }
 }

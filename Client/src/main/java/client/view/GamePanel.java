@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+
 import java.awt.*;
 import java.util.Iterator;
 import java.util.Set;
@@ -24,29 +25,41 @@ public class GamePanel extends JPanel {
 
 
 
-	private final Dimension SIZE_PLAYERS_PANEL = new Dimension(550, 200);
+	private final Dimension SIZE_PLAYERS_PANEL = new Dimension(620, 250);
 
 	public GamePanel(){
 		configurePanel();
 
-		/////
-		display();
-		//
 	}
 
 	public void display(){
-		prepareElements();
-		tableModelGame.setMadeMoves(madeMoves);
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {*/
+				prepareElements();
+				tableModelGame.setMadeMoves(madeMoves);
+		/*	}
+		});*/
+	}
+	
+	private void updateGamePanel(){
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				prepareElements();
+				//updateTableModelGame();
+			}
+		});
 	}
 
 
 
 	public void setMadeMovesToTable(String[][] madeMoves){
 		tableModelGame.setMadeMoves(madeMoves);
-		updateTableModel();
+		updateTableModelGame();
 	}
 
-	private void updateTableModel() {
+	private void updateTableModelGame() {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -62,7 +75,7 @@ public class GamePanel extends JPanel {
 
 	private void configurePanel() {
 		playersPanel.setBorder(new LineBorder(Color.green));
-		playersPanel.setMinimumSize(SIZE_PLAYERS_PANEL);
+		playersPanel.setMaximumSize(SIZE_PLAYERS_PANEL);
 		playersPanel.setPreferredSize(SIZE_PLAYERS_PANEL);
 		playersPanel.setMinimumSize(SIZE_PLAYERS_PANEL);
 
