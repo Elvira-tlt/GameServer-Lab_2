@@ -1,7 +1,7 @@
 package server;
 
 import server.clientActionHandlers.IncorrectPasswordExeption;
-import server.clientActionHandlers.NotFoundExeption;
+import server.clientActionHandlers.NotFoundException;
 import user.User;
 
 import java.util.LinkedList;
@@ -53,7 +53,7 @@ public class UserDatabase {
     	return nextFreeID;
     }
     
-    public User getUser(String nameForSearchUser, String passwordUser) throws NotFoundExeption, IncorrectPasswordExeption {
+    public User getUser(String nameForSearchUser, String passwordUser) throws NotFoundException, IncorrectPasswordExeption {
     	User userFromDatabase = null;
 
     	for(User userDatabaseForEquals: identifiedUsersInDatabase) {
@@ -75,7 +75,7 @@ public class UserDatabase {
     		}
     	}
 		if (userFromDatabase == null) {
-			throw new NotFoundExeption();
+			throw new NotFoundException();
 		}
     	return userFromDatabase;
     }

@@ -51,6 +51,7 @@ public class ConnectingWindow extends JFrame{
         Color colorText = Color.BLACK;
         textProcessInWindow.setFont(new Font("Times New Roman", Font.PLAIN, 13));
         if(typeInformationText == TypeInformationText.POSITIVE) {
+        	colorText = new Color(128, 228, 101);
             textProcessInWindow.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         } else {
             colorText = Color.red;

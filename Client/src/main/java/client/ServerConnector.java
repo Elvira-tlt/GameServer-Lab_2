@@ -26,6 +26,8 @@ public class ServerConnector extends Thread{
 	private Map<Class, ServerActionHandler> actions2Handlers = new HashMap<>();
 
 	private boolean isConnectedToServer = false;
+	
+	private String nameConnectedUser;
 
 	public void run() {
 		connectingToServer();
@@ -112,5 +114,13 @@ public class ServerConnector extends Thread{
 				handlerAction.handle(actionFromServer);
 			}
 		}
+	}
+	
+	public String getNameConnectedUser() {
+		return nameConnectedUser;
+	}
+
+	public void setNameConnectedUser(String nameConnectedUser) {
+		this.nameConnectedUser = nameConnectedUser;
 	}
 }

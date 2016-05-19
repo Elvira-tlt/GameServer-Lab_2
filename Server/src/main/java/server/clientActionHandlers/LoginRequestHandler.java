@@ -28,7 +28,7 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
                connectedUsers.addOnlineUser(connectedUser, clientConnector);
                
                
-            } catch (NotFoundExeption notFoundExeption) {
+            } catch (NotFoundException notFoundExeption) {
                 loginTypeResponseFromServer = LoginTypeResponseFromServer.NOT_FOUND;
             } catch (IncorrectPasswordExeption incorrectPasswordExeption) {
                 loginTypeResponseFromServer = LoginTypeResponseFromServer.INCORRECT_PASSWORD;

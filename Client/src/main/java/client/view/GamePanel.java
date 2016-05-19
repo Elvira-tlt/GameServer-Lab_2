@@ -1,11 +1,17 @@
 package client.view;
 
+import javax.print.attribute.standard.MediaSize.Other;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import client.actionListeners.ClickOnGameTable;
+import typeTeam.TypeTeam;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -21,42 +27,23 @@ public class GamePanel extends JPanel {
 	private String[][] madeMoves = STARTED_VALUE_MADE_MOVES;
 	private JPanel playersPanel = new JPanel();
 	private GamePlayerPanel thisPlayersPanel = new GamePlayerPanel();
-	private GamePlayerPanel OtherPlayersPanel = new GamePlayerPanel();
-
-
+	private GamePlayerPanel rivalPlayersPanel = new GamePlayerPanel();
+	private InformationTextGamePanel informationTextGamePanel = new InformationTextGamePanel();
+	//private String thisPlayerName;
+	//private String rivalName;
 
 	private final Dimension SIZE_PLAYERS_PANEL = new Dimension(620, 250);
 
-	public GamePanel(){
-		configurePanel();
-
-	}
-
 	public void display(){
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {*/
-				prepareElements();
-				tableModelGame.setMadeMoves(madeMoves);
-		/*	}
-		});*/
+		configurePanel();
+		prepareElements();
+		tableModelGame.setMadeMoves(madeMoves);
 	}
 	
-	private void updateGamePanel(){
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				prepareElements();
-				//updateTableModelGame();
-			}
-		});
-	}
-
-
-
 	public void setMadeMovesToTable(String[][] madeMoves){
 		tableModelGame.setMadeMoves(madeMoves);
 		updateTableModelGame();
+		//updateTextInformationGamePanel();
 	}
 
 	private void updateTableModelGame() {
@@ -93,32 +80,43 @@ public class GamePanel extends JPanel {
 	}
 
 	private void prepareElements() {
-
-		/////
-		int widht = 175; //232
-		int height =200; //200
-		Dimension size = new Dimension(widht, height);
-
-		JPanel panelGamer = new JPanel();
-		panelGamer.setPreferredSize(size);
-		panelGamer.setBorder(new LineBorder(Color.red));
-
-		JPanel panelGamer1 = new JPanel();
-		panelGamer1.setPreferredSize(size);
-		panelGamer1.setBorder(new LineBorder(Color.red));
-
-		JPanel panelGamer2 = new JPanel();
-		panelGamer2.setPreferredSize(size);
-		panelGamer2.setBorder(new LineBorder(Color.red));
-
-		playersPanel.add(panelGamer);
-		playersPanel.add(panelGamer1);
-		playersPanel.add(panelGamer2);
-		////
-
+		thisPlayersPanel.display();
+		rivalPlayersPanel.display();
+		
+		playersPanel.add(thisPlayersPanel);
+		playersPanel.add(informationTextGamePanel);
+		playersPanel.add(rivalPlayersPanel);
 
 		add(playersPanel, BorderLayout.WEST);
 		add(tableGameMoved, BorderLayout.CENTER);
-
 	}
+
+	public void setTypeTeamToPlayers(TypeTeam typeTeamThisPlayer, TypeTeam typeTeamRival){
+		thisPlayersPanel.setTypeTeam(typeTeamThisPlayer);
+		rivalPlayersPanel.setTypeTeam(typeTeamRival);
+	}
+	
+	public void setNameToPlayers(String thisPlayerName, String rivalName){
+		prepareGamePlayersPanel(thisPlayerName, rivalName);
+	}
+	
+	private void prepareGamePlayersPanel(String thisPlayerName, String rivalName){
+		thisPlayersPanel.setElementsToPanel(TypePlayers.YOU, thisPlayerName);
+		rivalPlayersPanel.setElementsToPanel(TypePlayers.RIVAL, rivalName);
+	}
+	
+	public void changeTextInformationGamePanel(String newText){
+		informationTextGamePanel.changeText(newText); 
+	}
+	
+	private void addActionListenersToTable(MouseAdapter mouseAdapter){
+		//tableModelGame.addTableModelListener(actionListener);
+		tableGameMoved.addMouseListener(new ClickOnGameTable(tableGameMoved));
+		
+		/*
+		
+		*/
+	}
+	
+	//http://www.skipy.ru/technics/layouts.html
 }

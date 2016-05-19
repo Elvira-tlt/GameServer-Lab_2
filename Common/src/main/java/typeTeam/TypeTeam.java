@@ -1,4 +1,4 @@
-package client.view;
+package typeTeam;
 
 public enum TypeTeam {
     CROSS, NOUGHT

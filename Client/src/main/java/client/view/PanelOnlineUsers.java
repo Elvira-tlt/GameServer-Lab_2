@@ -17,8 +17,9 @@ import java.util.Set;
 public class PanelOnlineUsers extends JPanel {
 	private final int WIDTH_TABLES = 230;
 	private final int HEIGHT_ROWS_TABLES = 25;
-	private final Dimension MINIMUM_PANEL_SIZE = new Dimension(265, 650);
+	private final Dimension MINIMUM_PANEL_SIZE = new Dimension(250, 650);
 	private final Dimension MAXIMUM_PANEL_SIZE = new Dimension(280, 650);
+	private final Dimension PREFERRED_PANEL_SIZE = new Dimension(265, 650);
 	private final Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(240, 450);
 	private final String TEXT_TO_BUTTON_PLAY= "<html> Выберите соперника для игры и нажмите <br> 'начать игру'   "+
 			"Если соперник не выбран,<br> то  он будет выбран случайным образом </html> ";
@@ -49,6 +50,7 @@ public class PanelOnlineUsers extends JPanel {
 
 		setMinimumSize(MINIMUM_PANEL_SIZE);
 		setMaximumSize(MAXIMUM_PANEL_SIZE);
+		setPreferredSize(PREFERRED_PANEL_SIZE);
 		setLayout(new FlowLayout());
 		setBorder(new LineBorder(Color.black));
 		setVisible(true);

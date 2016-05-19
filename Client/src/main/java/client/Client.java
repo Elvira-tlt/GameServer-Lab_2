@@ -34,8 +34,9 @@ public class Client {
 		//setting other classes to
 		loginResponseHandlerClient.setMainWindow(mainWindow);
 		loginResponseHandlerClient.setServerconnector(serverConnector);
-		//registrationResponseHandlerClient.
+		registrationResponseHandlerClient.setMainWindow(mainWindow);
 		startGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
+		
 		
 		usersResponseHandler.setPanelOnlineUsers(mainWindow.getPanelOnlineUsers());
 		

@@ -1,9 +1,6 @@
 package client.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
 import java.awt.event.WindowListener;
 
 import client.ServerConnector;
@@ -12,27 +9,20 @@ import client.actionListeners.RegistrationInSystemListener;
 import client.actionListeners.StartedGameListener;
 import requests.ExitClientRequest;
 
-import javax.jws.Oneway;
 import javax.swing.*;
 
 public class MainWindow extends JFrame{
 	private final String TITLEGAME = "Игра \"Морской бой\"";
-
-	
 	private ConnectingWindow connectingWindow = new ConnectingWindow();
     private PanelOnlineUsers panelOnlineUsers = new PanelOnlineUsers();
-
     private GamePanel gamePanel = new GamePanel();
-
     private JSplitPane splitMain = new JSplitPane();
     private ServerConnector serverConnector;
 
-
-
     private LoginInSystemListener loginInSystemListener;
-
     private RegistrationInSystemListener registrationInSystemListener;
     private StartedGameListener startGameListener;
+   
     public MainWindow(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
 
@@ -52,7 +42,11 @@ public class MainWindow extends JFrame{
     public void displayWindow(){
     	prepareMainWindowElements();
     }
-
+    
+    public void displayGamePanel(){
+    	gamePanel.display();
+    }
+    
     public void displayStartWindow(){
         displayConnectingWindow();
     }
@@ -70,7 +64,7 @@ public class MainWindow extends JFrame{
         splitMain.setRightComponent(panelOnlineUsers);
         splitMain.setLeftComponent(gamePanel);
 
-        Dimension minimumSize = new Dimension(550, 650);
+        Dimension minimumSize = new Dimension(580, 650);
         splitMain.getLeftComponent().setMinimumSize(minimumSize);
         splitMain.setResizeWeight(1.0);
         splitMain.setSize(900, 650);

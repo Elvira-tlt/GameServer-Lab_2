@@ -1,8 +1,6 @@
 package server;
 
-import responses.Action;
 import responses.UsersServerResponse;
-import server.clientActionHandlers.UsersRequestHandler;
 import user.User;
 
 import java.util.*;
@@ -29,7 +27,6 @@ public class ConnectedUsers {
 	public void addOnlineUser(User newOnlineUser, ClientConnector clientConnector) {
 		onlineUsersToConnector.put(newOnlineUser, clientConnector);
 		sendActionAllConnectedUsers();
-
 	}
 	
 	public void removeOnlineUser(User userForRemove){
@@ -49,7 +46,6 @@ public class ConnectedUsers {
 				allConnectedUsersWithoutThisUser.remove(thisUser);
 				connectedUsersResponse = new UsersServerResponse(allConnectedUsersWithoutThisUser);
 				clientConnector.sendAction(connectedUsersResponse);
-				
 		}
 	}
 	
@@ -58,12 +54,4 @@ public class ConnectedUsers {
 		onlineUsersToConnector.get(user);
 		return clientConnectorThisUser;
 	}
-	
-	/*public User getRundomSelectedOnlineUser(User notThisUser){
-		User randomSelectedUser;
-		List<User> freeUsers
-		
-		return randomSelectedUser;
-	}*/
-	
 }

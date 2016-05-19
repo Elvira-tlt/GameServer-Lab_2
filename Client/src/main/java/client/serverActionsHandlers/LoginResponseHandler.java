@@ -30,7 +30,10 @@ public class LoginResponseHandler implements ServerActionHandler<LoginServerResp
     		
     	}else if (responseServer == LoginTypeResponseFromServer.SUCCESSFUL){
     		connectingWindow.setTextToProcessInformation(TypeInformationText.POSITIVE, "УСПЕШНО!");
-			mainWindow.displayWindow();
+    		String nameConnectedUser = loginResponse.getNameConnectedUser();
+			serverConnector.setNameConnectedUser(nameConnectedUser);
+    		mainWindow.displayWindow();
+    		
 			serverConnector.sendToClientConnector(new UsersClientRequest());
     	}
     }

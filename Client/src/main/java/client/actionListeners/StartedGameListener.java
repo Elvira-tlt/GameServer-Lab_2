@@ -9,8 +9,10 @@ import user.User;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JTable;
+
 
 public class StartedGameListener implements ActionListener {
 	private ServerConnector serverConnector;
@@ -28,23 +30,19 @@ public class StartedGameListener implements ActionListener {
 		if(rivalIsSelected) {
 			List<User> freeUsers = panelOnlineUsers.getFreeUsersList();
 			rival = freeUsers.get(indexNumberSelectedUser);
-
+			
 			///
-			System.out.println("free users: " + freeUsers);
 			System.out.println("SELECTED RIVAL: " + rival.getNameUser() + "User: " + rival);
-			//
-
+			///
+			
 		} else {
-			//TODO
-			randomSelectedRival();
+			rival = getRandomSelectedRival();
+			
 			//
-			System.out.println("SELECTED RANDOM RIVAL: " + rival.getNameUser());
+			System.out.println("SELECTED RANDOM RIVAL: " + rival.getNameUser()+ "User: " + rival);
 			//
 		}
-		
 		sendRequest(rival);
-
-		
     }
 
 	private void sendRequest(User otherUser){
@@ -62,7 +60,13 @@ public class StartedGameListener implements ActionListener {
 		this.tableModelFreeUsers = panelOnlineUsers.getTableModelFreeUsers();
 	}
     
-    private void randomSelectedRival(){
-    	//TODO
+    private User getRandomSelectedRival(){
+    	List<User> freeUsers = panelOnlineUsers.getFreeUsersList();
+    	int countFreeUsers = freeUsers.size();
+    	Random random = new Random();
+    	int randomNumberForSelectedRival = random.nextInt(countFreeUsers);
+    	User randomSelectedRival = freeUsers.get(randomNumberForSelectedRival);
+
+    	return randomSelectedRival;
     }
 }
