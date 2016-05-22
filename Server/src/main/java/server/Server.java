@@ -41,6 +41,7 @@ public class Server {
 		ExitRequestHandler exitRequestHandler = new ExitRequestHandler();
 		ExitFromGameRequestHandler exitFromGameRequestHandler = new ExitFromGameRequestHandler();
 		StartGameRequestHandler startGameRequestHandler = new StartGameRequestHandler();
+		MoveGameRequestHandler moveGameRequestHandler = new MoveGameRequestHandler();
 			
 		//setting other classes to ActionHandlers:
 		loginRequestHandler.setUserDatabase(userDatabase);
@@ -50,6 +51,7 @@ public class Server {
 		usersRequestHandler.setOnlineUsers(connectedUsers);
 		startGameRequestHandler.setConnectedUsers(connectedUsers);
 		startGameRequestHandler.setGameRepository(gameRepository);
+		moveGameRequestHandler.setGameRepository(gameRepository);
 
 		exitRequestHandler.setConnectedUsers(connectedUsers);
 		
@@ -64,6 +66,7 @@ public class Server {
 		actions2Handlers.put(ExitClientRequest.class,exitRequestHandler);
 		actions2Handlers.put(ExitFromGameClientRequest.class,exitFromGameRequestHandler);
 		actions2Handlers.put(StartGameRequest.class, startGameRequestHandler);
+		actions2Handlers.put(MoveGameRequest.class, moveGameRequestHandler);
 	}
 
 	public void startServer () {

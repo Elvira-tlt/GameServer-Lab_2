@@ -13,15 +13,12 @@ public class TableModelGame implements TableModel {
     private String[][] madeMoves;
     private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
 
-    public TableModelGame(){
-    }
-
     public Set<TableModelListener> getListeners() {
         return listeners;
     }
     
-    public void setMadeMoves(String[][] madeMoves) {
-		this.madeMoves = madeMoves;
+    public void setMadeMoves(String[][] madeMovesNew) {
+		madeMoves = madeMovesNew;
 	}
 
     @Override

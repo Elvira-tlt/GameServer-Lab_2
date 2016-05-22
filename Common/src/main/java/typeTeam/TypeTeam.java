@@ -1,5 +1,6 @@
 package typeTeam;
 
+
 public enum TypeTeam {
-    CROSS, NOUGHT
+    CROSS, NOUGHT;
 }

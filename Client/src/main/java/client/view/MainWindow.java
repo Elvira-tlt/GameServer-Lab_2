@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.WindowListener;
 
 import client.ServerConnector;
+import client.actionListeners.ClickOnGameTable;
 import client.actionListeners.LoginInSystemListener;
 import client.actionListeners.RegistrationInSystemListener;
 import client.actionListeners.StartedGameListener;
@@ -22,6 +23,7 @@ public class MainWindow extends JFrame{
     private LoginInSystemListener loginInSystemListener;
     private RegistrationInSystemListener registrationInSystemListener;
     private StartedGameListener startGameListener;
+    private ClickOnGameTable clickOnGameTableListener;
    
     public MainWindow(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
@@ -73,23 +75,26 @@ public class MainWindow extends JFrame{
         add(splitMain);
     }
 
-    private void addListenersTo(){
-        connectingWindow.setListenerToButtonLogin(loginInSystemListener);
-        connectingWindow.setListenerToButtonRegistration(registrationInSystemListener);
-        panelOnlineUsers.setListenerToPlayButton(startGameListener);
-    }
-
     private void createListeners(){
         //TODO
         loginInSystemListener = new LoginInSystemListener(this);
         registrationInSystemListener = new RegistrationInSystemListener(this);
         startGameListener = new StartedGameListener();
+        clickOnGameTableListener = new ClickOnGameTable(gamePanel.getTableGameMoved());
 
         //setting serverConnector to ActionListener
         loginInSystemListener.setServerConnector(serverConnector);
         registrationInSystemListener.setServerConnector(serverConnector);
         startGameListener.setServerConnector(serverConnector);
         startGameListener.setPanelOnlineUsers(panelOnlineUsers);
+        clickOnGameTableListener.setServerConnector(serverConnector);
+    }
+
+    private void addListenersTo(){
+        connectingWindow.setListenerToButtonLogin(loginInSystemListener);
+        connectingWindow.setListenerToButtonRegistration(registrationInSystemListener);
+        panelOnlineUsers.setListenerToPlayButton(startGameListener);
+        gamePanel.setListenersToGameTable(clickOnGameTableListener);
     }
 
     public PanelOnlineUsers getPanelOnlineUsers(){

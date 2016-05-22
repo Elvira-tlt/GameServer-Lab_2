@@ -60,6 +60,7 @@ public class ServerConnector extends Thread{
 			while(true) {
 				Action actionResponse = (Action) fromServer.readObject();
 
+
 				////////////
 				System.out.println("	Client: recive actionResponse -" + actionResponse);
 				///////////

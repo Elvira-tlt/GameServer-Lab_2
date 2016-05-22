@@ -36,7 +36,7 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
         gameToThisPlayers = new Game(clientConnectorPlayer1, clientConnectorPlayer2);
         players2TypeTeam = gameToThisPlayers.getPlayers2TypeTeam();
         sendStartGameResponse(clientConnectorPlayer1, clientConnectorPlayer2);
-        gameRepository.setGame(gameToThisPlayers);
+        setPlayers2GameToRepository(player1, player2, gameToThisPlayers);
     }
 
 	private void sendStartGameResponse(ClientConnector clientConnector1, ClientConnector clientConnector2){
@@ -48,7 +48,6 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
         
         startGameResponse1.setTypeTeamAndNameThisPlayer(player1Name, typeTeamPlayer1);
         startGameResponse1.setTypeTeamAndNameOtherPlayer(player2Name, typeTeamPlayer2);
-		
         startGameResponse2.setTypeTeamAndNameThisPlayer(player2Name, typeTeamPlayer2);
         startGameResponse2.setTypeTeamAndNameOtherPlayer(player1Name, typeTeamPlayer1);
 
@@ -62,6 +61,11 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
 
 	public void setGameRepository(GameRepository gameRepository) {
 		this.gameRepository = gameRepository;
+	}
+	
+	private void setPlayers2GameToRepository(User player1ThisGame, User player2ThisGame, Game theirGame){
+		 gameRepository.setPlayer2Game(player1ThisGame, theirGame);
+	     gameRepository.setPlayer2Game(player2ThisGame, theirGame);
 	}
 }
 

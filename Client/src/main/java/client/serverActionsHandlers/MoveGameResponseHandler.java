@@ -1,24 +1,23 @@
 package client.serverActionsHandlers;
 
-import client.view.MainWindow;
+import client.view.GamePanel;
 import requests.ServerActionHandler;
 import responses.MoveGameResponse;
 
 
 public class MoveGameResponseHandler implements ServerActionHandler<MoveGameResponse> {
-    private MainWindow mainWindow;
+	 private GamePanel gamePanel;
+	 private String[][] madeMovesFromServer;
 
 
     @Override
     public void handle(MoveGameResponse moveGameResponse) {
-        System.out.println("MoveGameResponseClient");
-
-        //TODO
-
+    	madeMovesFromServer = moveGameResponse.getMadeMove();
+    	gamePanel.setMadeMovesToTable(madeMovesFromServer);
     }
 
-    public void setMainWindow(MainWindow mainWindow){
-        this.mainWindow = mainWindow;
+    public void setGamePanel(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
     }
 
 }

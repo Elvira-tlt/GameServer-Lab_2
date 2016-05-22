@@ -5,9 +5,6 @@ import typeTeam.TypeTeam;
 import requests.ServerActionHandler;
 import responses.StartGameResponse;
 
-import java.util.Random;
-
-
 public class StartGameResponseHandler implements ServerActionHandler<StartGameResponse> {
     private GamePanel gamePanel;
     private String currentPlayerName;
@@ -25,13 +22,6 @@ public class StartGameResponseHandler implements ServerActionHandler<StartGameRe
 		gamePanel.setTypeTeamToPlayers(typeTeamThisPlayer, typeTeamRival);
         gamePanel.setNameToPlayers(currentPlayerName, otherPlayerName);
         gamePanel.display();
-        
-      ///
-    	System.out.println("FROM ResponseHandler:");
-    	System.out.println("currentPlayerName :" + currentPlayerName + " - " + typeTeamThisPlayer);
-    	System.out.println("otherPlayerName :" + otherPlayerName + " - " + typeTeamRival);
-    	///
-        
     }
 
     public void setGamePanel(GamePanel gamePanel) {

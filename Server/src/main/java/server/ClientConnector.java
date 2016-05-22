@@ -39,12 +39,12 @@ public class ClientConnector extends Thread {
 
 	public void sendAction(Action actionResponse) {
 		try {
+			////////////
+			System.out.println("	Server: send actionResponse -" + actionResponse + " to " + userConnecting);
+			///////////
 			toClient.writeObject(actionResponse);
 			toClient.flush();
 
-			////////////
-			//System.out.println("	Server: send actionResponse -" + actionResponse);
-			///////////
 
 		} catch (IOException e) {
 			e.printStackTrace();
