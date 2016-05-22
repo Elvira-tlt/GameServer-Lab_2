@@ -1,9 +1,6 @@
 package client.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,6 +8,8 @@ import javax.swing.border.LineBorder;
 
 public class InformationTextGamePanel extends JPanel{
 	private JLabel gameText = new JLabel();
+	private final String INFORMATION_TEXT_STROKE = "Ход игрока ";
+	private final String INFORMATION_RESULT_GAME = "Игра окончена. Победил игрок:  ";
 	private final int WIDHT = 275;
 	private final int HEIGHT =200;
 	private Dimension size = new Dimension(WIDHT, HEIGHT);
@@ -19,14 +18,27 @@ public class InformationTextGamePanel extends JPanel{
 	
 	public InformationTextGamePanel() {
 		gameText.setPreferredSize(sizeText);
+		gameText.setFont(new Font("Times New Roman", Font.ITALIC, 20));
 		setPreferredSize(size);
 		setBorder(new LineBorder(Color.red));
 		
 		add(gameText);
 	}
 	
-	public void changeText(String newText) {
-		gameText.setText(newText);
+	public void changeInformationText (TypeInformationTextGame typeInformationTextGame, String nameCurrentUser) {
+		StringBuffer stringBufferInformationText = new StringBuffer();
+
+		if (typeInformationTextGame == TypeInformationTextGame.CHANGE_CURRENT_PLAYER) {
+			stringBufferInformationText.append(INFORMATION_TEXT_STROKE);
+		} else {
+			stringBufferInformationText.append(INFORMATION_RESULT_GAME);
+		}
+		stringBufferInformationText.append(nameCurrentUser);
+		String textInformationPanel = stringBufferInformationText.toString();
+		gameText.setText(textInformationPanel);
 		//invoke.later run()...
 	}
+
+
+
 }

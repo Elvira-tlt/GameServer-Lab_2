@@ -20,7 +20,6 @@ public class UsersResponseHandler implements ServerActionHandler<UsersServerResp
     public void handle(UsersServerResponse usersResponse) {
         List<User> allOnlineUsers = usersResponse.getOnlineUsers();
         selectionOnlineUsers(allOnlineUsers);
-        
         panelOnlineUsers.setOnlineUsersToPanel(freeUsers, players);
     }
 

@@ -3,5 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Client/src/main/java/client/Client.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Client/src/main/java/client/serverActionsHandlers/StartGameResponseHandler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Client/src/main/java/client/view/InformationTextGamePanel.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Common/src/main/java/responses/MoveGameResponse.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Server/src/main/java/server/clientActionHandlers/StartGameRequestHandler.java" charset="UTF-8" />
   </component>
 </project>

@@ -5,8 +5,7 @@ package responses;
 public class MoveGameResponse implements Action {
 	private String[][] madeMoves;
 
-	public MoveGameResponse() {
-	}
+	private String nameCurrentUser;
 
 	public MoveGameResponse(String[][] madeMoves) {
 		String[][] madeMovesNew = new String[3][3];
@@ -17,7 +16,11 @@ public class MoveGameResponse implements Action {
 		}
 		this.madeMoves = madeMovesNew;
 	}
-	
+
+	public void setNameCurrentUser(String nameCurrentUser){
+		this.nameCurrentUser = nameCurrentUser;
+	}
+
 	public String[][] getMadeMove(){
 		return madeMoves;
 	}
@@ -39,5 +42,9 @@ public class MoveGameResponse implements Action {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+
+	public String getNameCurrentUser() {
+		return nameCurrentUser;
 	}
 }

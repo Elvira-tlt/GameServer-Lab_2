@@ -17,14 +17,14 @@ public class Game {
 
 	private User player1;
     private User player2;
-    
+
     private User currentPlayer;
-    private User otherPlayer;
 
     public Game(ClientConnector clientConnector1, ClientConnector clientConnector2){
     	setTypeTeam2String();
     	setClientConnectorsPlayers(clientConnector1, clientConnector2);
         setTypeTeamToPlayers();
+        setFirstMadeMovePlayer();
     }
 
     private void setClientConnectorsPlayers(ClientConnector clientConnector1, ClientConnector clientConnector2){
@@ -43,63 +43,52 @@ public class Game {
         players2TypeTeam.put(player2, typeTeamPlayer2);
     }
 
-
   //обработчик действий игроков:
     public void moveMade(Move movePlayer, User playerMadeAMove){
-        currentPlayer  = playerMadeAMove;
-        otherPlayer = getOtherPlayer(currentPlayer);
 
-        int xMove = movePlayer.getRowIndex();
-        int yMove = movePlayer.getColumnIndex();
-        
-        TypeTeam typeTeamCurrentPlayer = players2TypeTeam.get(currentPlayer);
-        String valuePlayerTeam = typeTeam2DisplayedString.get(typeTeamCurrentPlayer);
-        
-        setMadeMoveToArray(xMove, yMove, valuePlayerTeam);
-        
+        if(playerMadeAMove.equals(currentPlayer)){
+            otherPlayer = getOtherPlayer(currentPlayer);
 
-    	//!!!!!!!!!!!!!!    	
-        checkGame();
-        
-        sendResponseForPlayers(/*madeMoves, */currentPlayer, otherPlayer);
-        
-        //
-        PRINT_Array(madeMoves);
-        System.out.println("");
-        //
-        
-        
-        
-        
-    }
-    
-  /////
-    private void PRINT_Array(String[][] arrayForPrint){
-    	System.out.print("[");
-    	for(int i=0; i<3; i++){
-        	for(int y=0; y<3; y++){
-        		System.out.print(arrayForPrint[i][y]);
-        	}
+            int xMove = movePlayer.getRowIndex();
+            int yMove = movePlayer.getColumnIndex();
+
+            TypeTeam typeTeamCurrentPlayer = players2TypeTeam.get(currentPlayer);
+            String valuePlayerTeam = typeTeam2DisplayedString.get(typeTeamCurrentPlayer);
+
+            setMadeMoveToArray(xMove, yMove, valuePlayerTeam);
+
+
+            //!!!!!!!!!!!!!!
+            checkGame();
+
+            sendResponseForPlayers(currentPlayer, otherPlayer);
+
+            //change current player:
+            currentPlayer = otherPlayer;
         }
-    	System.out.print("]");
+
+
+
+
+
+
     }
-    /////
-    
+
+
     private void setMadeMoveToArray(int xMove, int yMove, String settingValue){
     	madeMoves[xMove][yMove] = settingValue;
     }
-
     private void checkGame(){
     	//TODO
     	//проверка, есть ли выигравший
     }
 
-   
-    
-    
     public Map<User, TypeTeam> getPlayers2TypeTeam() {
         return players2TypeTeam;
     }
+
+
+
 
     private User getOtherPlayer(User currentPlayer){
         for(User player: playersThisGame ){
@@ -126,21 +115,37 @@ public class Game {
         }
         return TypeTeam.CROSS;
     }
-    
+
     private void setTypeTeam2String(){
     	typeTeam2DisplayedString.put(TypeTeam.CROSS, "X");
-    	typeTeam2DisplayedString.put(TypeTeam.NOUGHT, "0");
+    	typeTeam2DisplayedString.put(TypeTeam.NOUGHT, "O");
     }
-    
-    private void sendResponseForPlayers(/*String[][] madeMovesNew, */User player1, User player2){
-    	MoveGameResponse moveGameResponse = new MoveGameResponse(madeMoves);
-    	ClientConnector clientConnectorPlayer1 = players2Connectors.get(player1);
-    	ClientConnector clientConnectorPlayer2 = players2Connectors.get(player2);
+
+    private void sendResponseForPlayers(User playerCurrent, User playerOther){
+        String nameNextCurrentUser = playerOther.getNameUser();
+        MoveGameResponse moveGameResponse = new MoveGameResponse(madeMoves);
+        moveGameResponse.setNameCurrentUser(nameNextCurrentUser);
+    	ClientConnector clientConnectorPlayer1 = players2Connectors.get(playerCurrent);
+    	ClientConnector clientConnectorPlayer2 = players2Connectors.get(playerOther);
     	clientConnectorPlayer1.sendAction(moveGameResponse);
     	clientConnectorPlayer2.sendAction(moveGameResponse);
     }
 
+    private void setFirstMadeMovePlayer(){
+        Set<User> playersThisGame = players2TypeTeam.keySet();
+        for (User player :playersThisGame) {
+            TypeTeam typeTeamThisUser = players2TypeTeam.get(player);
+            if(typeTeamThisUser.equals(TypeTeam.CROSS)) {
+                currentPlayer = player;
+                break;
+            }
+        }
+    }
 
+    private User otherPlayer;
 
-
+    public String getNamePlayerCurrentStroke() {
+        String namePlayerCurrentStroke = currentPlayer.getNameUser();
+        return namePlayerCurrentStroke;
+    }
 }

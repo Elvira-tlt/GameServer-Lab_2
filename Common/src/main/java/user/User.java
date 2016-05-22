@@ -1,9 +1,8 @@
 package user;
 
 import java.io.Serializable;
-import java.util.Random;
 
-public class User implements Serializable{
+public class User implements Serializable, Cloneable{
     private String name;
     private String password;
     private int idUser;
@@ -34,8 +33,8 @@ public class User implements Serializable{
         return idUser;
     }
 
-    public void setStatusPlayer() {
-        this.statusPlayer= true;
+    public void setStatusPlayer(boolean isPlayer) {
+        this.statusPlayer= isPlayer;
     }
 
     public boolean getStatusUser() {
@@ -44,10 +43,8 @@ public class User implements Serializable{
 
     @Override
     public int hashCode() {
-        int prime = 1111;
-        Random random = new Random(prime);
-        int randomInt = random.nextInt();
-        prime = idUser * prime + randomInt;
+        int prime = 111111;
+        prime = idUser * prime;
         return prime;
     }
 
@@ -77,5 +74,10 @@ public class User implements Serializable{
                 ", idUser=" + idUser +
                 ", statusPlayer=" + statusPlayer +
                 '}';
+    }
+
+    @Override
+    public User clone() throws CloneNotSupportedException {
+        return (User) super.clone();
     }
 }

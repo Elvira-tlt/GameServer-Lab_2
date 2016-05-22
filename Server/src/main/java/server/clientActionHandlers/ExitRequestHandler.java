@@ -9,14 +9,19 @@ import user.User;
 
 public class ExitRequestHandler implements ClientActionHandler<ExitClientRequest> {
     private ConnectedUsers connectedUsers;
+    private boolean thisUserIsPlayer;
 
     @Override
     public void handle(ExitClientRequest eExitRequest, ClientConnector clientConnector) {
         System.out.println("ExitRequestHandler");
-
-
         User onlineUserForExit = clientConnector.getConnectedUser();
+
+        thisUserIsPlayer = onlineUserForExit.getStatusUser();
+        if(thisUserIsPlayer){
+            connectedUsers.changeStatusPlayerTo(onlineUserForExit, false);
+        }
         connectedUsers.removeOnlineUser(onlineUserForExit);
+
     }
 
     public void setConnectedUsers(ConnectedUsers connectedUsers) {

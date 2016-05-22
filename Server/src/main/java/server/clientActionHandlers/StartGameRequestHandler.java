@@ -3,6 +3,7 @@ package server.clientActionHandlers;
 
 import requests.StartGameRequest;
 import responses.StartGameResponse;
+import responses.UsersServerResponse;
 import server.ClientActionHandler;
 import server.ClientConnector;
 import server.ConnectedUsers;
@@ -11,6 +12,7 @@ import server.game.GameRepository;
 import typeTeam.TypeTeam;
 import user.User;
 
+import java.util.List;
 import java.util.Map;
 
 public class StartGameRequestHandler implements ClientActionHandler<StartGameRequest> {
@@ -37,6 +39,8 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
         players2TypeTeam = gameToThisPlayers.getPlayers2TypeTeam();
         sendStartGameResponse(clientConnectorPlayer1, clientConnectorPlayer2);
         setPlayers2GameToRepository(player1, player2, gameToThisPlayers);
+        setStatusPlayersToPlayers(player1, player2);
+        sendNewStatusPlayersToClients();
     }
 
 	private void sendStartGameResponse(ClientConnector clientConnector1, ClientConnector clientConnector2){
@@ -45,11 +49,15 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
         
         String player1Name = player1.getNameUser();
         String player2Name = player2.getNameUser();
-        
+
+        String namePlayerCurrentStroke = gameToThisPlayers.getNamePlayerCurrentStroke();
+
         startGameResponse1.setTypeTeamAndNameThisPlayer(player1Name, typeTeamPlayer1);
         startGameResponse1.setTypeTeamAndNameOtherPlayer(player2Name, typeTeamPlayer2);
+        startGameResponse1.setNamePlayerCurrentStroke(namePlayerCurrentStroke);
         startGameResponse2.setTypeTeamAndNameThisPlayer(player2Name, typeTeamPlayer2);
         startGameResponse2.setTypeTeamAndNameOtherPlayer(player1Name, typeTeamPlayer1);
+        startGameResponse2.setNamePlayerCurrentStroke(namePlayerCurrentStroke);
 
         clientConnector1.sendAction(startGameResponse1);
         clientConnector2.sendAction(startGameResponse2);
@@ -67,6 +75,15 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
 		 gameRepository.setPlayer2Game(player1ThisGame, theirGame);
 	     gameRepository.setPlayer2Game(player2ThisGame, theirGame);
 	}
+
+    private void setStatusPlayersToPlayers(User player1, User player2){
+        connectedUsers.changeStatusPlayerTo(player1, true);
+        connectedUsers.changeStatusPlayerTo(player2, true);
+    }
+
+    private void sendNewStatusPlayersToClients(){
+        connectedUsers.sendActionAllConnectedUsers();
+    }
 }
 
 

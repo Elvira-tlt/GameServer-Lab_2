@@ -34,10 +34,15 @@ public class ConnectedUsers {
 			sendActionAllConnectedUsers();
 	}
 
-	private void sendActionAllConnectedUsers(){
+	public  void sendActionAllConnectedUsers(){
 			UsersServerResponse connectedUsersResponse;
 			Collection<ClientConnector> clientConnectors = onlineUsersToConnector.values();
 			List<User> allConnectedUsers = getOnlineUsersToConnector();
+
+		///
+		System.out.println("all onlineUsers: " + allConnectedUsers);
+
+		///
 			
 			for(ClientConnector clientConnector: clientConnectors) {
 				List<User> allConnectedUsersWithoutThisUser = new ArrayList<User>();
@@ -53,5 +58,15 @@ public class ConnectedUsers {
 		ClientConnector clientConnectorThisUser = onlineUsersToConnector.get(user);
 		onlineUsersToConnector.get(user);
 		return clientConnectorThisUser;
+	}
+
+	public void changeStatusPlayerTo(User userForChangeStatus, boolean isPlayer){
+		Set<User> onlineUsers = onlineUsersToConnector.keySet();
+		for(User user: onlineUsers){
+			if(user.equals(userForChangeStatus)){
+				user.setStatusPlayer(isPlayer);
+				break;
+			}
+		}
 	}
 }

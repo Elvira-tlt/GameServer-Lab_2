@@ -28,6 +28,7 @@ public class GamePanel extends JPanel {
 	private GamePlayerPanel rivalPlayersPanel = new GamePlayerPanel();
 	private InformationTextGamePanel informationTextGamePanel = new InformationTextGamePanel();
 	private final Dimension SIZE_PLAYERS_PANEL = new Dimension(620, 250);
+	private final Font FONT_TABLE_GAME = new Font("Times New Roman", Font.CENTER_BASELINE, 75);
 
 	public void display(){
 		configurePanel();
@@ -37,6 +38,7 @@ public class GamePanel extends JPanel {
 
 	public void setMadeMovesToTable(String[][] madeMoves){
 		tableModelGame.setMadeMoves(madeMoves);
+		tableGameMoved.setFont(FONT_TABLE_GAME);
 		updateTableModelGame();
 		//updateTextInformationGamePanel();
     }
@@ -100,8 +102,8 @@ public class GamePanel extends JPanel {
 		rivalPlayersPanel.setElementsToPanel(TypePlayers.RIVAL, rivalName);
 	}
 
-	public void changeTextInformationGamePanel(String newText){
-		informationTextGamePanel.changeText(newText);
+	public void changeTextInformationGamePanel(TypeInformationTextGame typeInformationTextGame, String nameCurrentUser){
+		informationTextGamePanel.changeInformationText(typeInformationTextGame, nameCurrentUser);
 	}
 
 	public void setListenersToGameTable(MouseAdapter mouseAdapter){

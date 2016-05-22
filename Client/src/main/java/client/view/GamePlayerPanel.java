@@ -18,6 +18,9 @@ public class GamePlayerPanel extends JPanel {
 	private JLabel whoDisplayedLabel;
 	private JLabel playersNameLabel;
 	private JLabel typeTeamLabel;
+	private final Font FONT_WHO_DISPLAYED_LABEL = new Font("Times New Roman", Font.BOLD, 15);
+	private final Font FONT_PLAYERS_NAME_LABEL = new Font("Times New Roman", Font.BOLD, 25);
+	private final Font FONT_TYPE_TEAM_LABEL = new Font("Times New Roman", Font.ITALIC, 75);
 	
 	public GamePlayerPanel() {
 		setPreferredSize(PANEL_SIZE);
@@ -59,7 +62,8 @@ public class GamePlayerPanel extends JPanel {
 		playersNameLabel = new JLabel(namePlayer);
 		typeTeamLabel = new JLabel(typeTeamPlayer);
 		
-		whoDisplayedLabel.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		typeTeamLabel.setFont(new Font("Times New Roman", Font.ITALIC, 55));
+		whoDisplayedLabel.setFont(FONT_WHO_DISPLAYED_LABEL);
+		playersNameLabel.setFont(FONT_PLAYERS_NAME_LABEL);
+		typeTeamLabel.setFont(FONT_TYPE_TEAM_LABEL);
 	}
 }
