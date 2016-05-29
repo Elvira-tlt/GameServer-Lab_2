@@ -57,7 +57,7 @@ public class ClientConnector extends Thread {
 				Action actionRequest = (Action) fromClient.readObject();
 
 				////////////
-				//System.out.println("	Server: recive actionResponse -" + actionRequest);
+				System.out.println("	Server: recive actionResponse -" + actionRequest);
 				///////////
 
 				handleActions(actionRequest);

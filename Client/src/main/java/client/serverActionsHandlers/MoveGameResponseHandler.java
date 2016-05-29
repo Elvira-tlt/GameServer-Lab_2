@@ -1,7 +1,7 @@
 package client.serverActionsHandlers;
 
 import client.view.GamePanel;
-import client.view.TypeInformationTextGame;
+import move.TypeValueCurrentStateGame;
 import requests.ServerActionHandler;
 import responses.MoveGameResponse;
 
@@ -17,7 +17,7 @@ public class MoveGameResponseHandler implements ServerActionHandler<MoveGameResp
     	madeMovesFromServer = moveGameResponse.getMadeMove();
         nameCurrentUser = moveGameResponse.getNameCurrentUser();
     	gamePanel.setMadeMovesToTable(madeMovesFromServer);
-        gamePanel.changeTextInformationGamePanel(TypeInformationTextGame.CHANGE_CURRENT_PLAYER, nameCurrentUser);
+        gamePanel.changeTextInformationGamePanel(TypeValueCurrentStateGame.CHANGE_CURRENT_PLAYER, nameCurrentUser);
     }
 
     public void setGamePanel(GamePanel gamePanel) {

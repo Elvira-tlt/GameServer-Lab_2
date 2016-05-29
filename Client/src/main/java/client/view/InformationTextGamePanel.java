@@ -1,5 +1,7 @@
 package client.view;
 
+import move.TypeValueCurrentStateGame;
+
 import java.awt.*;
 
 import javax.swing.JLabel;
@@ -9,7 +11,7 @@ import javax.swing.border.LineBorder;
 public class InformationTextGamePanel extends JPanel{
 	private JLabel gameText = new JLabel();
 	private final String INFORMATION_TEXT_STROKE = "Ход игрока ";
-	private final String INFORMATION_RESULT_GAME = "Игра окончена. Победил игрок:  ";
+	private final String INFORMATION_RESULT_GAME = "<html> Игра окончена.<br> Победил игрок: ";
 	private final int WIDHT = 275;
 	private final int HEIGHT =200;
 	private Dimension size = new Dimension(WIDHT, HEIGHT);
@@ -25,20 +27,16 @@ public class InformationTextGamePanel extends JPanel{
 		add(gameText);
 	}
 	
-	public void changeInformationText (TypeInformationTextGame typeInformationTextGame, String nameCurrentUser) {
+	public void changeInformationText (TypeValueCurrentStateGame typeInformationTextGame, String nameCurrentUser) {
 		StringBuffer stringBufferInformationText = new StringBuffer();
 
-		if (typeInformationTextGame == TypeInformationTextGame.CHANGE_CURRENT_PLAYER) {
+		if (typeInformationTextGame == TypeValueCurrentStateGame.CHANGE_CURRENT_PLAYER) {
 			stringBufferInformationText.append(INFORMATION_TEXT_STROKE);
-		} else {
+		} else  {
 			stringBufferInformationText.append(INFORMATION_RESULT_GAME);
 		}
 		stringBufferInformationText.append(nameCurrentUser);
 		String textInformationPanel = stringBufferInformationText.toString();
 		gameText.setText(textInformationPanel);
-		//invoke.later run()...
 	}
-
-
-
 }

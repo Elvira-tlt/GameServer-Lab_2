@@ -18,7 +18,9 @@ public class MoveGameRequestHandler implements ClientActionHandler<MoveGameReque
     	
     	User playerMakeAMove = clientConnector.getConnectedUser();
     	Game gameThisPlayer = gameRepository.getGameThisPlayer(playerMakeAMove);
-    	gameThisPlayer.moveMade(madeMove, playerMakeAMove);
+    	if(gameThisPlayer != null){
+            gameThisPlayer.moveMade(madeMove, playerMakeAMove);
+        }
     }
     
     public void setGameRepository(GameRepository gameRepository){

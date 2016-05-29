@@ -1,11 +1,7 @@
 package server.game;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import user.User;
 
@@ -18,6 +14,7 @@ public class GameRepository {
 	}
 
 	public void setPlayer2Game(User user, Game newGame) {
+		newGame.setGameRepository(this);
 		users2game.put(user, newGame);
 	}
 	
@@ -25,4 +22,31 @@ public class GameRepository {
 		Game gameThisPlayer = users2game.get(player);
 		return gameThisPlayer;
 	}
+
+	public void removeGame(Game gameForRemove){
+
+		int amountFoundGame = 0;
+		Set<User> users = new HashSet<>();
+		users.addAll(this.users2game.keySet());
+		for (User user: users){
+			User currentIterationUser = user;
+			Game gameCurrentIterationUser = this.users2game.get(currentIterationUser);
+			if(gameCurrentIterationUser.equals(gameForRemove)){
+				this.users2game.remove(currentIterationUser, gameForRemove);
+				amountFoundGame++;
+				if(amountFoundGame == 2){
+
+					//
+					System.out.println("IN GAME REPOSITORY: Game removed");
+					//\\
+					break;
+				}
+			}
+
+		}
+
+
+	}
+
+
 }

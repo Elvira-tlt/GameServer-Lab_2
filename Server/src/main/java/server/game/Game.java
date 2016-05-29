@@ -3,6 +3,8 @@ package server.game;
 import java.util.*;
 
 import move.Move;
+import move.TypeValueCurrentStateGame;
+import responses.EndedGameResponse;
 import responses.MoveGameResponse;
 import server.ClientConnector;
 import typeTeam.TypeTeam;
@@ -13,12 +15,17 @@ public class Game {
     private Map<User, TypeTeam> players2TypeTeam = new HashMap<>();
     private Map<TypeTeam, String> typeTeam2DisplayedString = new HashMap<>();
 	private List<User> playersThisGame = new ArrayList<User>();
+	private Integer[] checkList = new Integer[]{-2, -1, 0, 1, 2};
 	private String[][] madeMoves  = new String[3][3];
 
 	private User player1;
     private User player2;
 
     private User currentPlayer;
+    private boolean isGameWin;
+    private boolean isGameEnd;
+
+    private GameRepository gameRepository;
 
     public Game(ClientConnector clientConnector1, ClientConnector clientConnector2){
     	setTypeTeam2String();
@@ -54,41 +61,65 @@ public class Game {
 
             TypeTeam typeTeamCurrentPlayer = players2TypeTeam.get(currentPlayer);
             String valuePlayerTeam = typeTeam2DisplayedString.get(typeTeamCurrentPlayer);
-
-            setMadeMoveToArray(xMove, yMove, valuePlayerTeam);
-
-
-            //!!!!!!!!!!!!!!
-            checkGame();
-
-            sendResponseForPlayers(currentPlayer, otherPlayer);
-
-            //change current player:
-            currentPlayer = otherPlayer;
+            
+            if (checkMayMadeMoveToHere(xMove, yMove)){
+        		madeMoves[xMove][yMove] = valuePlayerTeam;
+        		
+        		checkGame(xMove, yMove);
+        		
+        		sendResponseForPlayers(isGameEnd, currentPlayer, otherPlayer);
+               
+                
+                //change current player:
+                currentPlayer = otherPlayer;
+            }
         }
-
-
-
-
-
-
     }
-
-
-    private void setMadeMoveToArray(int xMove, int yMove, String settingValue){
-    	madeMoves[xMove][yMove] = settingValue;
+    
+    //get TypeEndedGame: Win, End
+    private void checkGame(int xMove, int yMove){
+    	//Проверка, завершилась ли игра
+    	
+    	CheckWinGame checkWinGame = new CheckWinGame(madeMoves);
+    	isGameWin = checkWinGame.getGameisWin(xMove, yMove);
+		if(isGameWin){
+			//TODO проверить, завершилась ли игра 
+			//если да, то Game end, game remove
+			isGameEnd = true;
+            endedThisGame();
+        } else {
+			// проверить на окончание игры, отправить ответ
+			isGameEnd = false;
+		}
     }
-    private void checkGame(){
-    	//TODO
-    	//проверка, есть ли выигравший
+    
+    private boolean getCheckEndedGame(){
+    	boolean gameIsEnd = false;
+    	for(String[] valueArrayCell: madeMoves){
+    		for(String valueCell: valueArrayCell){
+    			if(valueCell != null){
+    				gameIsEnd = true;
+    				break;
+    			}
+    		}
+    	}
+    	
+    	//http://lord-n.narod.ru/download/books/walla/programming/Spr_po_C/03/0306.htm
+    	//http://developer.alexanderklimov.ru/android/java/break.php
+    	//http://javatalks.ru/topics/5714
+    	
+    	return gameIsEnd;
+    }
+    
+    private boolean checkMayMadeMoveToHere(int xMove, int yMove){
+    	String valueHere = madeMoves[xMove][yMove];
+    	boolean mayMakeMove = valueHere == null;
+    	return mayMakeMove;
     }
 
     public Map<User, TypeTeam> getPlayers2TypeTeam() {
         return players2TypeTeam;
     }
-
-
-
 
     private User getOtherPlayer(User currentPlayer){
         for(User player: playersThisGame ){
@@ -121,16 +152,29 @@ public class Game {
     	typeTeam2DisplayedString.put(TypeTeam.NOUGHT, "O");
     }
 
-    private void sendResponseForPlayers(User playerCurrent, User playerOther){
-        String nameNextCurrentUser = playerOther.getNameUser();
-        MoveGameResponse moveGameResponse = new MoveGameResponse(madeMoves);
-        moveGameResponse.setNameCurrentUser(nameNextCurrentUser);
+    private void sendResponseForPlayers(boolean isGameEnd, User playerCurrent, User playerOther){
     	ClientConnector clientConnectorPlayer1 = players2Connectors.get(playerCurrent);
     	ClientConnector clientConnectorPlayer2 = players2Connectors.get(playerOther);
-    	clientConnectorPlayer1.sendAction(moveGameResponse);
-    	clientConnectorPlayer2.sendAction(moveGameResponse);
+    	MoveGameResponse moveGameResponse;
+    	EndedGameResponse endedGameResponse;
+    	
+        String nameNextCurrentUser = playerOther.getNameUser();
+        moveGameResponse = new MoveGameResponse(madeMoves);
+        moveGameResponse.setNameCurrentUser(nameNextCurrentUser);
+        	
+        clientConnectorPlayer1.sendAction(moveGameResponse);
+        clientConnectorPlayer2.sendAction(moveGameResponse);
+    		
+        if (isGameEnd){
+             endedGameResponse = new EndedGameResponse(TypeValueCurrentStateGame.GAME_ENDED);
+             if(isGameWin){
+                 endedGameResponse.setWinUser(getNamePlayerCurrentStroke());
+             }
+             clientConnectorPlayer1.sendAction(endedGameResponse);
+             clientConnectorPlayer2.sendAction(endedGameResponse);
+         }
     }
-
+    
     private void setFirstMadeMovePlayer(){
         Set<User> playersThisGame = players2TypeTeam.keySet();
         for (User player :playersThisGame) {
@@ -147,5 +191,14 @@ public class Game {
     public String getNamePlayerCurrentStroke() {
         String namePlayerCurrentStroke = currentPlayer.getNameUser();
         return namePlayerCurrentStroke;
+    }
+
+    public void setGameRepository(GameRepository gameRepository){
+        this.gameRepository = gameRepository;
+    }
+
+    private void endedThisGame(){
+        //TODO
+        gameRepository.removeGame(this);
     }
 }

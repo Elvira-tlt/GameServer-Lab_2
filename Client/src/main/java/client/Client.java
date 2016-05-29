@@ -30,6 +30,7 @@ public class Client {
 		UsersResponseHandler usersResponseHandler = new UsersResponseHandler();
 		StartGameResponseHandler startGameResponseHandler = new StartGameResponseHandler();
 		MoveGameResponseHandler moveGameResponseHandler = new MoveGameResponseHandler();
+		EndedGameResponseHandler endedGameResponseHandler = new EndedGameResponseHandler();
 		
 		
 		//setting other classes to
@@ -38,6 +39,7 @@ public class Client {
 		registrationResponseHandlerClient.setMainWindow(mainWindow);
 		startGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
 		moveGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
+		endedGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
 		
 		usersResponseHandler.setPanelOnlineUsers(mainWindow.getPanelOnlineUsers());
 		
@@ -50,6 +52,7 @@ public class Client {
 		actions2Handlers.put(ConnectingServerResponse.class, new ConnectingResponseHandler());
 		actions2Handlers.put(MoveGameResponse.class, moveGameResponseHandler);
 		actions2Handlers.put(StartGameResponse.class, startGameResponseHandler);
+		actions2Handlers.put(EndedGameResponse.class, endedGameResponseHandler);
 
 		
 		return actions2Handlers;

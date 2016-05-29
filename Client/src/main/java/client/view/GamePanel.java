@@ -5,10 +5,12 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import move.TypeValueCurrentStateGame;
 import typeTeam.TypeTeam;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -102,13 +104,24 @@ public class GamePanel extends JPanel {
 		rivalPlayersPanel.setElementsToPanel(TypePlayers.RIVAL, rivalName);
 	}
 
-	public void changeTextInformationGamePanel(TypeInformationTextGame typeInformationTextGame, String nameCurrentUser){
+	public void changeTextInformationGamePanel(TypeValueCurrentStateGame typeInformationTextGame, String nameCurrentUser){
 		informationTextGamePanel.changeInformationText(typeInformationTextGame, nameCurrentUser);
 	}
 
 	public void setListenersToGameTable(MouseAdapter mouseAdapter){
 		tableGameMoved.addMouseListener(mouseAdapter);
 	}
+
+	public void deleteListenersInGameTable(){
+		MouseListener[] mouseListeners = tableGameMoved.getMouseListeners();
+		for(MouseListener mouseListener: mouseListeners){
+			tableGameMoved.removeMouseListener(mouseListener);
+		}
+		//delete selecting color in JTable:
+		tableGameMoved.setSelectionBackground(Color.white);
+	}
+
+
 
 	//http://www.skipy.ru/technics/layouts.html
 

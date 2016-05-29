@@ -1,27 +1,27 @@
 package client.serverActionsHandlers;
 
 import client.view.GamePanel;
-import client.view.TypeInformationText;
-import client.view.TypeInformationTextGame;
+import client.view.MainWindow;
+import move.TypeValueCurrentStateGame;
 import requests.ServerActionHandler;
 import responses.EndedGameResponse;
-import responses.MoveGameResponse;
 import user.User;
 
 
 public class EndedGameResponseHandler implements ServerActionHandler<EndedGameResponse> {
     private String nameWinUser = new String();
-    private User winUser;
     private GamePanel gamePanel;
 
 
     @Override
     public void handle(EndedGameResponse endedGameResponse) {
-        winUser = endedGameResponse.getWinUser();
-        if(winUser != null) {
-           nameWinUser = winUser.getNameUser();
-        }
-        gamePanel.changeTextInformationGamePanel(TypeInformationTextGame.GAME_ENDED, nameWinUser);
+        nameWinUser = endedGameResponse.getNameWinUser();
+            //
+            System.out.println("IN EndedGameResponseHandler: nameWinUser" + nameWinUser );
+            //
+
+        gamePanel.changeTextInformationGamePanel(TypeValueCurrentStateGame.GAME_ENDED, nameWinUser);
+        gamePanel.deleteListenersInGameTable();
     }
 
     public void setGamePanel(GamePanel gamePanel) {

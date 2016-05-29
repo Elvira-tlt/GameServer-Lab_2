@@ -1,7 +1,7 @@
 package client.serverActionsHandlers;
 
 import client.view.GamePanel;
-import client.view.TypeInformationTextGame;
+import move.TypeValueCurrentStateGame;
 import typeTeam.TypeTeam;
 import requests.ServerActionHandler;
 import responses.StartGameResponse;
@@ -24,7 +24,7 @@ public class StartGameResponseHandler implements ServerActionHandler<StartGameRe
         
 		gamePanel.setTypeTeamToPlayers(typeTeamThisPlayer, typeTeamRival);
         gamePanel.setNameToPlayers(currentPlayerName, otherPlayerName);
-        gamePanel.changeTextInformationGamePanel(TypeInformationTextGame.CHANGE_CURRENT_PLAYER, namePlayerCurrentStroke);
+        gamePanel.changeTextInformationGamePanel(TypeValueCurrentStateGame.CHANGE_CURRENT_PLAYER, namePlayerCurrentStroke);
         gamePanel.display();
     }
 
