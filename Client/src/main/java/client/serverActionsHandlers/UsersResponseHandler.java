@@ -15,7 +15,6 @@ public class UsersResponseHandler implements ServerActionHandler<UsersServerResp
 	private List<User> freeUsers = new ArrayList<User>();
 	private List<User> players = new ArrayList<User>();
 
-	
     @Override
     public void handle(UsersServerResponse usersResponse) {
         List<User> allOnlineUsers = usersResponse.getOnlineUsers();
@@ -23,7 +22,6 @@ public class UsersResponseHandler implements ServerActionHandler<UsersServerResp
         panelOnlineUsers.setOnlineUsersToPanel(freeUsers, players);
     }
 
-    
     private void selectionOnlineUsers(List<User> onlineUsers){
     	Iterator<User> iteratorOnlineUsers = onlineUsers.iterator();
 		freeUsers = new ArrayList<>();
@@ -38,7 +36,6 @@ public class UsersResponseHandler implements ServerActionHandler<UsersServerResp
         		freeUsers.add(onlineUser);
         	}
         }
-        
     }
     
 	public void setPanelOnlineUsers(PanelOnlineUsers panelOnlineUsers) {

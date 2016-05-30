@@ -48,6 +48,9 @@ public class Game {
                 madeMoves[xMove][yMove] = valuePlayerTeam;
 
                 boolean isGameEnd = checkGame(xMove, yMove);
+                if(isGameEnd){
+                    endedThisGame();
+                }
                 sendResponseForPlayers(isGameEnd, currentPlayer, otherPlayer);
 
                 //change current player:
@@ -74,13 +77,6 @@ public class Game {
         TypeTeam typeTeamPlayer2 = getTypeTeamNotThis(typeTeamPlayer1);
         players2TypeTeam.put(player1, typeTeamPlayer1);
         players2TypeTeam.put(player2, typeTeamPlayer2);
-
-        //
-        System.out.println("IN GAME Type player1: " + player1 + typeTeamPlayer1);
-        System.out.println("IN GAME Type player2: " + player2 + typeTeamPlayer2);
-        //
-
-
     }
 
     private boolean checkGame(int xMove, int yMove){
@@ -88,7 +84,6 @@ public class Game {
     	CheckWinGame checkWinGame = new CheckWinGame(madeMoves);
     	isGameWin = checkWinGame.getGameisWin(xMove, yMove);
 		if(isGameWin){
-            endedThisGame();
             isGameEnd = true;
         } else {
 			isGameEnd = getCheckEndedGame();
@@ -170,11 +165,10 @@ public class Game {
     }
     
     private void setFirstMadeMovePlayer(){
-        Set<User> playersThisGame = players2TypeTeam.keySet();
-        for (User player :playersThisGame) {
-            TypeTeam typeTeamThisUser = players2TypeTeam.get(player);
+        for (Map.Entry<User, TypeTeam> entry : players2TypeTeam.entrySet()) {
+            TypeTeam typeTeamThisUser = entry.getValue();
             if(typeTeamThisUser.equals(TypeTeam.CROSS)) {
-                currentPlayer = player;
+                currentPlayer = entry.getKey();
                 break;
             }
         }

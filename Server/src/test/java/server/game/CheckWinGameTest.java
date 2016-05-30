@@ -3,8 +3,6 @@ package server.game;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
 public class CheckWinGameTest {
 
     @Test

@@ -11,7 +11,7 @@ import requests.ExitFromGameClientRequest;
 import javax.swing.*;
 
 public class MainWindow extends JFrame{
-	private final String TITLEGAME = "Игра \"Морской бой\"";
+	private final static String TITLEGAME = "Игра \"Морской бой\"";
 	private ConnectingWindow connectingWindow = new ConnectingWindow();
     private PanelOnlineUsers panelOnlineUsers = new PanelOnlineUsers();
     private GamePanel gamePanel = new GamePanel();
@@ -116,7 +116,7 @@ public class MainWindow extends JFrame{
         }
     }
 
-    private WindowListener closingProgram = new java.awt.event.WindowAdapter() {
+    private transient WindowListener closingProgram = new java.awt.event.WindowAdapter() {
         public void windowClosing(java.awt.event.WindowEvent evt) {
           serverConnector.sendToClientConnector(new ExitClientRequest());
         }

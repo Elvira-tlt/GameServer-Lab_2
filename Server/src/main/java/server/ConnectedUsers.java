@@ -38,12 +38,6 @@ public class ConnectedUsers {
 			UsersServerResponse connectedUsersResponse;
 			Collection<ClientConnector> clientConnectors = onlineUsersToConnector.values();
 			List<User> allConnectedUsers = getOnlineUsersToConnector();
-
-		///
-		System.out.println("all onlineUsers: " + allConnectedUsers);
-
-		///
-			
 			for(ClientConnector clientConnector: clientConnectors) {
 				List<User> allConnectedUsersWithoutThisUser = new ArrayList<User>();
 				allConnectedUsersWithoutThisUser.addAll(allConnectedUsers);
@@ -56,7 +50,6 @@ public class ConnectedUsers {
 	
 	public ClientConnector getClientConnectorByUser(User user){
 		ClientConnector clientConnectorThisUser = onlineUsersToConnector.get(user);
-		onlineUsersToConnector.get(user);
 		return clientConnectorThisUser;
 	}
 

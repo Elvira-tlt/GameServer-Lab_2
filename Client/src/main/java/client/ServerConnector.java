@@ -10,23 +10,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import requests.ServerActionHandler;
 import responses.Action;
 import user.User;
 
 
 public class ServerConnector extends Thread{
+	private static final Logger LOG = LoggerFactory.getLogger(ServerConnector.class);
 	private static final int SERVER_PORT = 8008;
-	private static final String SERVER_ADDRESS = "127.0.0.1";
 
+	private static final String SERVER_ADDRESS = "127.0.0.1";
 	private Socket socket;
 	private ObjectInputStream fromServer;
+
 	private ObjectOutputStream toServer;
 
 	private Map<Class, ServerActionHandler> actions2Handlers = new HashMap<>();
 
 	private boolean isConnectedToServer = false;
-	
 	private String nameConnectedUser;
 
 	public void run() {
@@ -40,31 +43,20 @@ public class ServerConnector extends Thread{
 			socket = new Socket(inetAdress, SERVER_PORT);
 			toServer = new ObjectOutputStream(socket.getOutputStream());
 			fromServer = new ObjectInputStream(socket.getInputStream());
-
 			isConnectedToServer = true;
 
-			//////
-			//System.out.println("Client socket "+socket);
-			///
-
 		}catch (ConnectException e) {
-			System.out.println("Не удалось подключиться к серверу. \nСервер недоступен \n");
+			LOG.error("Не удалось подключиться к серверу. \nСервер недоступен \n", e);
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-
 	private void listeningClientConnector() {
 		try {
 			while(true) {
 				Action actionResponse = (Action) fromServer.readObject();
-
-
-				////////////
-				System.out.println("	Client: recive actionResponse -" + actionResponse);
-				///////////
-
+				LOG.info("Recive actionResponse {}", actionResponse);
 				handleActions(actionResponse);
 			}
 
@@ -89,22 +81,15 @@ public class ServerConnector extends Thread{
 					toServer.writeObject(actionRequest);
 					toServer.flush();
 					isNotSendedAction = true;
-					
-					///
-					System.out.println("	Client: send actionRequest -" + actionRequest);
-					//
-					
-					
+					LOG.info("Send actionRequest {}", actionRequest);
 				}
 			}
 
 		} catch (IOException |InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			LOG.error("Exception ", e);
 		}
 	}
-
-		
 
 	private void handleActions(Action actionFromServer) {
 		Class actionFromServerClass = actionFromServer.getClass();

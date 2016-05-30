@@ -7,20 +7,24 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
+import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import responses.*;
 import user.User;
 
 public class ClientConnector extends Thread {
+	private static final Logger LOG = LoggerFactory.getLogger(ClientConnector.class);
 	private Socket socket;
 	private ObjectInputStream fromClient;
 	private ObjectOutputStream toClient;
 	private User userConnecting;
-
 	private ConnectedUsers connectedUsers;
-
 	private Map<Class, ClientActionHandler> actions2Handlers = new HashMap<>();
+
 
 	public ClientConnector(Socket socket) {
 		this.socket = socket;
@@ -39,9 +43,7 @@ public class ClientConnector extends Thread {
 
 	public void sendAction(Action actionResponse) {
 		try {
-			////////////
-			//System.out.println("	Server: send actionResponse -" + actionResponse + " to " + userConnecting);
-			///////////
+			LOG.info("Server: send actionResponse {} to {} ", actionResponse, userConnecting);
 			toClient.writeObject(actionResponse);
 			toClient.flush();
 		} catch (IOException e) {
@@ -53,11 +55,7 @@ public class ClientConnector extends Thread {
 		try{
 			while(true) {
 				Action actionRequest = (Action) fromClient.readObject();
-
-				////////////
-				//System.out.println("	Server: recive actionResponse -" + actionRequest);
-				///////////
-
+				LOG.info("Server: recive actionRequest {} ", actionRequest);
 				handleActions(actionRequest);
 			}
 		} catch (SocketException e) {
@@ -66,8 +64,7 @@ public class ClientConnector extends Thread {
 				nameConnectedUser = userConnecting.getNameUser();
 				connectedUsers.removeOnlineUser(userConnecting);
 			}
-			System.out.println("Client" + " '"+ nameConnectedUser + "' " + "disconnected");
-
+			LOG.info("Client {} disconnected ", nameConnectedUser, e);
 		}
 	}
 
@@ -80,7 +77,6 @@ public class ClientConnector extends Thread {
 
 			if (entry.getKey().equals(actionFromClientClass)) {
 				ClientActionHandler<Action> handlerAction = entry.getValue();
-
 				handlerAction.handle(actionFromClient, this);
 			}
 		}
@@ -104,4 +100,19 @@ public class ClientConnector extends Thread {
 		return user;
 	}
 
+	private void configureLogging() {
+		Properties properties = new Properties();
+		properties.put("log4j.rootLogger", "ALL, MY_APPENDER, CONSOLE_APPENDER");
+
+		properties.put("log4j.appender.MY_APPENDER", "org.apache.log4j.FileAppender");
+		properties.put("log4j.appender.MY_APPENDER.layout", "org.apache.log4j.PatternLayout");
+		String pattern = "[%p] - %d{HH:mm:ss.SSS}-[%t] <%c> - %m%n";
+		properties.put("log4j.appender.MY_APPENDER.layout.conversionPattern", pattern);
+		properties.put("log4j.appender.MY_APPENDER.File", "server_log.txt");
+
+		properties.put("log4j.appender.CONSOLE_APPENDER", "org.apache.log4j.ConsoleAppender");
+		properties.put("log4j.appender.CONSOLE_APPENDER.layout", "org.apache.log4j.PatternLayout");
+		properties.put("log4j.appender.CONSOLE_APPENDER.layout.conversionPattern", pattern);
+		PropertyConfigurator.configure(properties);
+	}
 }

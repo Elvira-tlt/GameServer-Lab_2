@@ -30,12 +30,6 @@ public class StartGameResponseHandler implements ServerActionHandler<StartGameRe
         gamePanel.changeTextInformationGamePanel(TypeValueCurrentStateGame.CHANGE_CURRENT_PLAYER, namePlayerCurrentStroke);
         gamePanel.retrieveListenersToGameTable();
         gamePanel.display();
-
-        //
-        System.out.println("IN StartGameResponse");
-        System.out.println(currentPlayerName + ": " + typeTeamThisPlayer);
-        System.out.println(otherPlayerName + ": " + typeTeamRival);
-        //
     }
 
     public void setMainWindow(MainWindow mainWindow) {

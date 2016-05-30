@@ -15,18 +15,18 @@ import java.util.List;
 import java.util.Set;
 
 public class PanelOnlineUsers extends JPanel {
-	private final int WIDTH_TABLES = 230;
-	private final int HEIGHT_ROWS_TABLES = 25;
-	private final Dimension MINIMUM_PANEL_SIZE = new Dimension(250, 650);
-	private final Dimension MAXIMUM_PANEL_SIZE = new Dimension(280, 650);
-	private final Dimension PREFERRED_PANEL_SIZE = new Dimension(265, 650);
-	private final Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(240, 450);
-	private final String TEXT_TO_BUTTON_PLAY= "<html> Выберите соперника для игры и нажмите <br> 'начать игру'   "+
+	private final static int WIDTH_TABLES = 230;
+	private final static int HEIGHT_ROWS_TABLES = 25;
+	private final static Dimension MINIMUM_PANEL_SIZE = new Dimension(250, 650);
+	private final static Dimension MAXIMUM_PANEL_SIZE = new Dimension(280, 650);
+	private final static Dimension PREFERRED_PANEL_SIZE = new Dimension(265, 650);
+	private final static Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(240, 450);
+	private final static String TEXT_TO_BUTTON_PLAY= "<html> Выберите соперника для игры и нажмите <br> 'начать игру'   "+
 			"Если соперник не выбран,<br> то  он будет выбран случайным образом </html> ";
-	private final String NAME_BUTTON_PLAY = "Начать игру";
-	private final String TEXT_TO_BUTTON_QUIT= "<html> Если Вам необходимо покинуть игру, <br> нажмите \"Сдаться\". " +
+	private final static String NAME_BUTTON_PLAY = "Начать игру";
+	private final static String TEXT_TO_BUTTON_QUIT= "<html> Если Вам необходимо покинуть игру, <br> нажмите \"Сдаться\". " +
 			" В этом случае победа <br> будет присуждена Вашему сопернику </html> "; // <br>
-	private final String NAME_BUTTON_QUIT = "Сдаться";
+	private final static String NAME_BUTTON_QUIT = "Сдаться";
 
 	private List<User> freeUsersList = new ArrayList<>();
 	private List<User> playersList = new ArrayList<>();

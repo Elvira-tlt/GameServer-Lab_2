@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class ConnectingWindow extends JFrame{
-    private final String TITLEGAME = "Добро пожаловать!";
+    private final static String TITLEGAME = "Добро пожаловать!";
     private Box loginMainBox;
     private JLabel textProcessInWindow = new JLabel("Пожалуйста, войдите в систему или зарегистрируйтесь!");
     private JTextField loginField = new JTextField();
@@ -55,7 +55,6 @@ public class ConnectingWindow extends JFrame{
             textProcessInWindow.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         } else {
             colorText = Color.red;
-
         }
         textProcessInWindow.setText(textToProcessInformation);
         textProcessInWindow.setForeground(colorText);
@@ -101,10 +100,5 @@ public class ConnectingWindow extends JFrame{
         loginMainBox.add(boxButton);
 
         setContentPane(loginMainBox);
-
-    }
-
-    public static void main(String[] args) {
-        ConnectingWindow window = new ConnectingWindow();
     }
 }

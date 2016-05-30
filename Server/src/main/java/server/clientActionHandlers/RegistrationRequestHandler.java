@@ -14,7 +14,6 @@ import java.util.List;
 
 public class RegistrationRequestHandler implements ClientActionHandler<RegistrationClientRequest> {
 	private UserDatabase userDatabase;
-	private ConnectedUsers connectedUsers;
 
     @Override
     public void handle(RegistrationClientRequest registrationClientRequest, ClientConnector connector) {
@@ -48,10 +47,6 @@ public class RegistrationRequestHandler implements ClientActionHandler<Registrat
     	this.userDatabase = userDatebase;
     }
     
-    public void setOnlineUsers(ConnectedUsers connectedUsers) {
-        this.connectedUsers = connectedUsers;
-    }
-
     private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer responseAboutConnected) {
        RegistrationServerResponse registrationServerResponse = new RegistrationServerResponse(responseAboutConnected);
        connector.sendAction(registrationServerResponse);

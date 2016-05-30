@@ -9,7 +9,7 @@ import user.User;
 
 
 public class EndedGameResponseHandler implements ServerActionHandler<EndedGameResponse> {
-    private String nameWinUser = new String();
+    private String nameWinUser;
     private MainWindow mainWindow;
 
 
@@ -17,10 +17,6 @@ public class EndedGameResponseHandler implements ServerActionHandler<EndedGameRe
     public void handle(EndedGameResponse endedGameResponse) {
         GamePanel gamePanel = mainWindow.getGamePanel();
         nameWinUser = endedGameResponse.getNameWinUser();
-            //
-            System.out.println("IN EndedGameResponseHandler: nameWinUser" + nameWinUser );
-            //
-
         gamePanel.changeTextInformationGamePanel(TypeValueCurrentStateGame.GAME_ENDED, nameWinUser);
         gamePanel.deleteListenersInGameTable();
         mainWindow.changePanelButtonToGame(false);

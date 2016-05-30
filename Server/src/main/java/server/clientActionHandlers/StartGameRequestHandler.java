@@ -24,8 +24,6 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
     private GameRepository gameRepository;
     private Map<User, TypeTeam> players2TypeTeam;
 
-    
-  
     @Override
     public void handle(StartGameRequest startGameRequest, ClientConnector clientConnector) {
         player1 = clientConnector.getConnectedUser();
@@ -39,7 +37,6 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
         sendStartGameResponse(clientConnectorPlayer1, clientConnectorPlayer2);
         setPlayers2GameToRepository(player1, player2, gameToThisPlayers);
         setStatusPlayersToPlayers(player1, player2);
-       // sendNewStatusPlayersToClients();
     }
 
 	private void sendStartGameResponse(ClientConnector clientConnector1, ClientConnector clientConnector2){

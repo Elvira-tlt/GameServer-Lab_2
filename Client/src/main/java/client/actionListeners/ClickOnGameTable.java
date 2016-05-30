@@ -1,6 +1,8 @@
 package client.actionListeners;
 
 import client.ServerConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import requests.MoveGameRequest;
 
 import java.awt.event.MouseAdapter;
@@ -9,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 
 public class ClickOnGameTable extends MouseAdapter{
+	private static final Logger LOG = LoggerFactory.getLogger(ClickOnGameTable.class);
 	private JTable tableGame;
 	private ServerConnector serverConnector;
 	
@@ -19,10 +22,7 @@ public class ClickOnGameTable extends MouseAdapter{
 	public void mouseClicked(MouseEvent e) {
 		int rowClicked = tableGame.getSelectedRow();
 		int columnClicked = tableGame.getSelectedColumn();
-		//
-		System.out.println("Clicked: " + rowClicked + ", " + columnClicked);
-		//
-
+		LOG.debug("Clicked: {} {}", rowClicked, columnClicked);
 		sendMadeMove(rowClicked, columnClicked);
 	}
 

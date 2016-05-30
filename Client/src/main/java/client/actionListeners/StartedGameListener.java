@@ -3,6 +3,8 @@ package client.actionListeners;
 import client.ServerConnector;
 import client.view.PanelOnlineUsers;
 import client.view.TableModelOnlineUsers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import requests.StartGameRequest;
 import user.User;
 
@@ -15,6 +17,7 @@ import javax.swing.JTable;
 
 
 public class StartedGameListener implements ActionListener {
+	private static final Logger LOG = LoggerFactory.getLogger(StartedGameListener.class);
 	private ServerConnector serverConnector;
 	private TableModelOnlineUsers tableModelFreeUsers;
 	private JTable tableFreeUsers;
@@ -30,17 +33,10 @@ public class StartedGameListener implements ActionListener {
 		if(rivalIsSelected) {
 			List<User> freeUsers = panelOnlineUsers.getFreeUsersList();
 			rival = freeUsers.get(indexNumberSelectedUser);
-			
-			///
-			System.out.println("SELECTED RIVAL: " + rival.getNameUser() + "User: " + rival);
-			///
-			
+			LOG.info("Selected rival: {}", rival);
 		} else {
 			rival = getRandomSelectedRival();
-			
-			//
-			System.out.println("SELECTED RANDOM RIVAL: " + rival.getNameUser()+ "User: " + rival);
-			//
+			LOG.info("Selected random rival: {}", rival);
 		}
 		sendRequest(rival);
     }

@@ -29,6 +29,10 @@ public class User implements Serializable, Cloneable{
         return passwordUser;
     }
 
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
     public int getidUser() {
         return idUser;
     }
