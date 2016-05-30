@@ -37,9 +37,9 @@ public class Client {
 		loginResponseHandlerClient.setMainWindow(mainWindow);
 		loginResponseHandlerClient.setServerconnector(serverConnector);
 		registrationResponseHandlerClient.setMainWindow(mainWindow);
-		startGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
+		startGameResponseHandler.setMainWindow(mainWindow);
 		moveGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
-		endedGameResponseHandler.setGamePanel(mainWindow.getGamePanel());
+		endedGameResponseHandler.setMainWindow(mainWindow);
 		
 		usersResponseHandler.setPanelOnlineUsers(mainWindow.getPanelOnlineUsers());
 		

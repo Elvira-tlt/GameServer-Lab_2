@@ -23,8 +23,7 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
     private Game gameToThisPlayers;
     private GameRepository gameRepository;
     private Map<User, TypeTeam> players2TypeTeam;
-    private StartGameResponse startGameResponse1 = new StartGameResponse();
-	private StartGameResponse startGameResponse2 = new StartGameResponse();
+
     
   
     @Override
@@ -40,7 +39,7 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
         sendStartGameResponse(clientConnectorPlayer1, clientConnectorPlayer2);
         setPlayers2GameToRepository(player1, player2, gameToThisPlayers);
         setStatusPlayersToPlayers(player1, player2);
-        sendNewStatusPlayersToClients();
+       // sendNewStatusPlayersToClients();
     }
 
 	private void sendStartGameResponse(ClientConnector clientConnector1, ClientConnector clientConnector2){
@@ -52,6 +51,8 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
 
         String namePlayerCurrentStroke = gameToThisPlayers.getNamePlayerCurrentStroke();
 
+        StartGameResponse startGameResponse1 = new StartGameResponse();
+        StartGameResponse startGameResponse2 = new StartGameResponse();
         startGameResponse1.setTypeTeamAndNameThisPlayer(player1Name, typeTeamPlayer1);
         startGameResponse1.setTypeTeamAndNameOtherPlayer(player2Name, typeTeamPlayer2);
         startGameResponse1.setNamePlayerCurrentStroke(namePlayerCurrentStroke);
@@ -79,10 +80,6 @@ public class StartGameRequestHandler implements ClientActionHandler<StartGameReq
     private void setStatusPlayersToPlayers(User player1, User player2){
         connectedUsers.changeStatusPlayerTo(player1, true);
         connectedUsers.changeStatusPlayerTo(player2, true);
-    }
-
-    private void sendNewStatusPlayersToClients(){
-        connectedUsers.sendActionAllConnectedUsers();
     }
 }
 

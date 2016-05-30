@@ -1,13 +1,14 @@
 package client.serverActionsHandlers;
 
 import client.view.GamePanel;
+import client.view.MainWindow;
 import move.TypeValueCurrentStateGame;
 import typeTeam.TypeTeam;
 import requests.ServerActionHandler;
 import responses.StartGameResponse;
 
 public class StartGameResponseHandler implements ServerActionHandler<StartGameResponse> {
-    private GamePanel gamePanel;
+    private MainWindow mainWindow;
     private String currentPlayerName;
     private String otherPlayerName;
     private String namePlayerCurrentStroke;
@@ -16,6 +17,7 @@ public class StartGameResponseHandler implements ServerActionHandler<StartGameRe
 
     @Override
     public void handle(StartGameResponse startGameResponse) {
+        GamePanel gamePanel = mainWindow.getGamePanel();
         currentPlayerName = startGameResponse.getCurrentPlayerName();
         otherPlayerName = startGameResponse.getOtherPlayerName();
         typeTeamThisPlayer = startGameResponse.getTypeTeamCurrentPlayer();
@@ -24,12 +26,20 @@ public class StartGameResponseHandler implements ServerActionHandler<StartGameRe
         
 		gamePanel.setTypeTeamToPlayers(typeTeamThisPlayer, typeTeamRival);
         gamePanel.setNameToPlayers(currentPlayerName, otherPlayerName);
+        mainWindow.changePanelButtonToGame(true);
         gamePanel.changeTextInformationGamePanel(TypeValueCurrentStateGame.CHANGE_CURRENT_PLAYER, namePlayerCurrentStroke);
+        gamePanel.retrieveListenersToGameTable();
         gamePanel.display();
+
+        //
+        System.out.println("IN StartGameResponse");
+        System.out.println(currentPlayerName + ": " + typeTeamThisPlayer);
+        System.out.println(otherPlayerName + ": " + typeTeamRival);
+        //
     }
 
-    public void setGamePanel(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
+    public void setMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
     }
 
 

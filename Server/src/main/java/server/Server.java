@@ -22,6 +22,7 @@ public class Server {
 		userDatabase = new UserDatabase();
 		connectedUsers = new ConnectedUsers();
 		gameRepository = new GameRepository();
+		gameRepository.setConnectedUsers(connectedUsers);
 		prepareActions2HandlersToConnectors();
 	}
 
@@ -52,8 +53,10 @@ public class Server {
 		startGameRequestHandler.setConnectedUsers(connectedUsers);
 		startGameRequestHandler.setGameRepository(gameRepository);
 		moveGameRequestHandler.setGameRepository(gameRepository);
-
+		exitFromGameRequestHandler.setConnectedUsers(connectedUsers);
+		exitFromGameRequestHandler.setGameRepository(gameRepository);
 		exitRequestHandler.setConnectedUsers(connectedUsers);
+
 		
 		//TODO
 			

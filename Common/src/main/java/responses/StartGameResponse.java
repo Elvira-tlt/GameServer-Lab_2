@@ -6,10 +6,10 @@ import typeTeam.TypeTeam;
 
 public class StartGameResponse implements Action {
     private String currentPlayerName;
+
     private String otherPlayerName;
     private TypeTeam typeTeamCurrentPlayer;
-	private TypeTeam typeTeamOtherPlayer;
-
+    private TypeTeam typeTeamOtherPlayer;
     private String namePlayerCurrentStroke;
 
     public void setTypeTeamAndNameThisPlayer(String currentPlayerName, TypeTeam typeTeamCurrentPlayer){
@@ -44,5 +44,15 @@ public class StartGameResponse implements Action {
 
     public void setNamePlayerCurrentStroke(String namePlayerCurrentStroke) {
         this.namePlayerCurrentStroke = namePlayerCurrentStroke;
+    }
+
+    @Override
+    public String toString() {
+        return "StartGameResponse{" +
+                "currentPlayerName='" + currentPlayerName + '\'' +
+                ", otherPlayerName='" + otherPlayerName + '\'' +
+                ", typeTeamCurrentPlayer=" + typeTeamCurrentPlayer +
+                ", typeTeamOtherPlayer=" + typeTeamOtherPlayer +
+                '}';
     }
 }

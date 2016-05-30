@@ -24,6 +24,9 @@ public class PanelOnlineUsers extends JPanel {
 	private final String TEXT_TO_BUTTON_PLAY= "<html> Выберите соперника для игры и нажмите <br> 'начать игру'   "+
 			"Если соперник не выбран,<br> то  он будет выбран случайным образом </html> ";
 	private final String NAME_BUTTON_PLAY = "Начать игру";
+	private final String TEXT_TO_BUTTON_QUIT= "<html> Если Вам необходимо покинуть игру, <br> нажмите \"Сдаться\". " +
+			" В этом случае победа <br> будет присуждена Вашему сопернику </html> "; // <br>
+	private final String NAME_BUTTON_QUIT = "Сдаться";
 
 	private List<User> freeUsersList = new ArrayList<>();
 	private List<User> playersList = new ArrayList<>();
@@ -42,6 +45,7 @@ public class PanelOnlineUsers extends JPanel {
 
 	private JLabel textToButton = new JLabel(TEXT_TO_BUTTON_PLAY);
 	private JButton playButton = new JButton(NAME_BUTTON_PLAY);
+	private JButton quitButton = new JButton(NAME_BUTTON_QUIT);
 
 	public PanelOnlineUsers(){
 		prepareElements();
@@ -95,10 +99,7 @@ public class PanelOnlineUsers extends JPanel {
 		tabedOnlineUsers.addTab("Free users", panelFreeUsers);
 		tabedOnlineUsers.addTab("Players", panelPlayers);
 
-		Color colorButton = new Color(128, 228, 101);
-		panelButton.setLayout(new GridLayout(2, 1));
-		playButton.setBackground(colorButton);
-		playButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		decorButton();
 		panelButton.add(textToButton);
 		panelButton.add(playButton);
 
@@ -106,6 +107,30 @@ public class PanelOnlineUsers extends JPanel {
 
 		add(tabedOnlineUsers);
 		add(panelButton, BorderLayout.SOUTH);
+	}
+
+	private void decorButton(){
+		Color colorButtonPlay = new Color(128, 228, 101);
+		Color colorButtonQuit = new Color(248, 10, 50);
+		playButton.setBackground(colorButtonPlay);
+		playButton.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		quitButton.setBackground(colorButtonQuit);
+		quitButton.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+		panelButton.setLayout(new GridLayout(2, 1));
+	}
+
+	public void changeButtonToQuitButton(){
+		textToButton.setText(TEXT_TO_BUTTON_QUIT);
+		panelButton.remove(playButton);
+		panelButton.add(quitButton);
+		decorButton();
+	}
+
+	public void changeButtonToPlayButton(){
+		textToButton.setText(TEXT_TO_BUTTON_PLAY);
+		panelButton.remove(quitButton);
+		panelButton.add(playButton);
+		decorButton();
 	}
 	
 	public List<User> getFreeUsersList() {
@@ -122,5 +147,9 @@ public class PanelOnlineUsers extends JPanel {
 	
 	 public void setListenerToPlayButton(ActionListener listener){
 	        playButton.addActionListener(listener);;
-	    }
+	 }
+
+	public void setListenerToQuitButton(ActionListener listener){
+		quitButton.addActionListener(listener);;
+	}
 }

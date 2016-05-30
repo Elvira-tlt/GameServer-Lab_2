@@ -27,8 +27,10 @@ public class LoginResponseHandler implements ServerActionHandler<LoginServerResp
     	} else if (responseServer == LoginTypeResponseFromServer.INCORRECT_PASSWORD){
     		connectingWindow.setTextToProcessInformation(TypeInformationText.NEGATIVE,"Неверный пароль!");
     		mainWindow.displayStartWindow();
-    		
-    	}else if (responseServer == LoginTypeResponseFromServer.SUCCESSFUL){
+		}else if(responseServer == LoginTypeResponseFromServer.USER_CONNECTED){
+			connectingWindow.setTextToProcessInformation(TypeInformationText.NEGATIVE,"Данный пользователь уже вошел в систему!");
+			mainWindow.displayStartWindow();
+		}else if (responseServer == LoginTypeResponseFromServer.SUCCESSFUL){
     		connectingWindow.setTextToProcessInformation(TypeInformationText.POSITIVE, "УСПЕШНО!");
     		String nameConnectedUser = loginResponse.getNameConnectedUser();
 			serverConnector.setNameConnectedUser(nameConnectedUser);

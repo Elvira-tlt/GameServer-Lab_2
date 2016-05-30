@@ -40,12 +40,10 @@ public class ClientConnector extends Thread {
 	public void sendAction(Action actionResponse) {
 		try {
 			////////////
-			System.out.println("	Server: send actionResponse -" + actionResponse + " to " + userConnecting);
+			//System.out.println("	Server: send actionResponse -" + actionResponse + " to " + userConnecting);
 			///////////
 			toClient.writeObject(actionResponse);
 			toClient.flush();
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +55,7 @@ public class ClientConnector extends Thread {
 				Action actionRequest = (Action) fromClient.readObject();
 
 				////////////
-				System.out.println("	Server: recive actionResponse -" + actionRequest);
+				//System.out.println("	Server: recive actionResponse -" + actionRequest);
 				///////////
 
 				handleActions(actionRequest);

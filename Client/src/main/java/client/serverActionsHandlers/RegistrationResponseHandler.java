@@ -18,19 +18,17 @@ public class RegistrationResponseHandler implements ServerActionHandler<Registra
     
 	@Override
     public void handle(RegistrationServerResponse registrationResponse) {
-		//TODO
-		
 		ConnectingWindow connectingWindow = mainWindow.getLoginJFrame();
-		
-    	boolean responseFromServer = registrationResponse.getResponse();
-    	if(responseFromServer){
+		LoginTypeResponseFromServer responseFromServer = registrationResponse.getResponse();
+
+		if(responseFromServer == LoginTypeResponseFromServer.NOT_UNIQUE_NAME){
+			connectingWindow.setTextToProcessInformation(TypeInformationText.NEGATIVE, "<html>Пользователь с данным именем уже существует" +
+			"<br> Пожалуйста, выберите другое имя для регистрации. </html>");
+			mainWindow.displayStartWindow();
+		} else if(responseFromServer == LoginTypeResponseFromServer.SUCCESSFUL){
     		connectingWindow.setTextToProcessInformation(TypeInformationText.POSITIVE,TEXT_SUCCESSFUL_REGISTRATION);
     		mainWindow.displayStartWindow();
     	}
-   
-    	
-    	
-	
 	}
 	
 	public void setMainWindow(MainWindow mainWindow){

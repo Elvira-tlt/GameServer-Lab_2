@@ -4,11 +4,9 @@ import java.awt.Dimension;
 import java.awt.event.WindowListener;
 
 import client.ServerConnector;
-import client.actionListeners.ClickOnGameTable;
-import client.actionListeners.LoginInSystemListener;
-import client.actionListeners.RegistrationInSystemListener;
-import client.actionListeners.StartedGameListener;
+import client.actionListeners.*;
 import requests.ExitClientRequest;
+import requests.ExitFromGameClientRequest;
 
 import javax.swing.*;
 
@@ -24,6 +22,7 @@ public class MainWindow extends JFrame{
     private RegistrationInSystemListener registrationInSystemListener;
     private StartedGameListener startGameListener;
     private ClickOnGameTable clickOnGameTableListener;
+    private QuitInGameListener quitInGameListener;
    
     public MainWindow(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
@@ -45,9 +44,9 @@ public class MainWindow extends JFrame{
     	prepareMainWindowElements();
     }
     
-    public void displayGamePanel(){
+   /* public void displayGamePanel(){
     	gamePanel.display();
-    }
+    }*/
     
     public void displayStartWindow(){
         displayConnectingWindow();
@@ -81,6 +80,7 @@ public class MainWindow extends JFrame{
         registrationInSystemListener = new RegistrationInSystemListener(this);
         startGameListener = new StartedGameListener();
         clickOnGameTableListener = new ClickOnGameTable(gamePanel.getTableGameMoved());
+        quitInGameListener = new QuitInGameListener();
 
         //setting serverConnector to ActionListener
         loginInSystemListener.setServerConnector(serverConnector);
@@ -88,14 +88,17 @@ public class MainWindow extends JFrame{
         startGameListener.setServerConnector(serverConnector);
         startGameListener.setPanelOnlineUsers(panelOnlineUsers);
         clickOnGameTableListener.setServerConnector(serverConnector);
+        quitInGameListener.setServerConnector(serverConnector);
     }
 
     private void addListenersTo(){
         connectingWindow.setListenerToButtonLogin(loginInSystemListener);
         connectingWindow.setListenerToButtonRegistration(registrationInSystemListener);
         panelOnlineUsers.setListenerToPlayButton(startGameListener);
+        panelOnlineUsers.setListenerToQuitButton(quitInGameListener);
         gamePanel.setListenersToGameTable(clickOnGameTableListener);
     }
+
 
     public PanelOnlineUsers getPanelOnlineUsers(){
     	return panelOnlineUsers;
@@ -103,6 +106,14 @@ public class MainWindow extends JFrame{
 
     public GamePanel getGamePanel() {
         return gamePanel;
+    }
+
+    public void changePanelButtonToGame(boolean isGame){
+        if(isGame){
+            panelOnlineUsers.changeButtonToQuitButton();
+        } else {
+            panelOnlineUsers.changeButtonToPlayButton();
+        }
     }
 
     private WindowListener closingProgram = new java.awt.event.WindowAdapter() {

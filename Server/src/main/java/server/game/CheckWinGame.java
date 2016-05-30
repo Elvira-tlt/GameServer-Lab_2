@@ -1,7 +1,5 @@
 package server.game;
 
-import java.awt.Label;
-
 public class CheckWinGame {
 	private String[][] madeMoves;
 	private int xLastMove;
@@ -13,62 +11,66 @@ public class CheckWinGame {
 	}
 
     public boolean getGameisWin(int xLastMove, int yLastMove){
-    	boolean isGameWin = false;
+    	boolean isGameWin;
     	valueLastMove = madeMoves[xLastMove][yLastMove];
     	this.xLastMove = xLastMove;
     	this.yLastMove = yLastMove;
     	
-    	
-    	// check on vertical
-    	
-    	
-    	//
     	isGameWin = verticalCheck();
     	if(!isGameWin){
-    		
-    	}
-    	//
-    	
-    	
-    	
-    	/*if(verticalCheck()){
-        	isGameWin = verticalCheck();
-        } /*if (!isGameWin){
-        	
-        }*/
-    	
-    	System.out.println("In GAME_Check: gameIsWin? - " + isGameWin);
-    	return isGameWin;
-    }
-    
+			isGameWin = gorizotalCheck();
+			if(!isGameWin){
+				isGameWin = diagonalLeft2RightCheck();
+				if(!isGameWin){
+					isGameWin = diagonalRight2LeftCheck();
+					}
+				}
+			}
+		return isGameWin;
+	}
+
+
     private boolean verticalCheck() {
 		int amountEqualse = 0;
 		for (int i = 0; i < 3; i++) {
 			String valueCurrentIteration = madeMoves[i][yLastMove];
-			if (valueCurrentIteration.equals(valueLastMove)) {
+			if ((valueCurrentIteration !=null) && (valueCurrentIteration.equals(valueLastMove))) {
 				amountEqualse++;
 			}
 		}
 		return amountEqualse == 3;
 	}
 
-/*
-		for (int increase = -2; increase <= 2; increase++) {
-			int increaseValue = xLastMove + increase;
-			if ((increaseValue >= 0) && (increaseValue <= 2) && (increaseValue != xLastMove)) {
-				String valueMoveNextCall = madeMoves[increaseValue][yLastMove];
-				if ((valueMoveNextCall != null) && (valueMoveNextCall.equals(valueLastMove))) {
-					amountEqualse++;
-				}
+	private boolean gorizotalCheck() {
+		int amountEqualse = 0;
+		for (int i = 0; i < 3; i++) {
+			String valueCurrentIteration = madeMoves[xLastMove][i];
+			if ((valueCurrentIteration !=null) && (valueCurrentIteration.equals(valueLastMove))) {
+				amountEqualse++;
 			}
 		}
-		//
-		System.out.println("amount Equals: " + amountEqualse);
-		//
-		return amountEqualse == 2;
+		return amountEqualse == 3;
 	}
-*/
 
-    	
-    	
+	private boolean diagonalLeft2RightCheck() {
+		int amountEqualse = 0;
+		for (int i = 0; i < 3; i++) {
+			String valueCurrentIteration = madeMoves[i][i];
+			if ((valueCurrentIteration !=null) && (valueCurrentIteration.equals(valueLastMove))) {
+				amountEqualse++;
+			}
+		}
+		return amountEqualse == 3;
+	}
+
+	private boolean diagonalRight2LeftCheck() {
+		int amountEqualse = 0;
+			for (int i = 0, j = 2; i < 3; i++, j--) {
+				String valueCurrentIteration = madeMoves[i][j];
+				if ((valueCurrentIteration !=null) && (valueCurrentIteration.equals(valueLastMove))) {
+				amountEqualse++;
+			}
+		}
+		return amountEqualse == 3;
+	}
 }

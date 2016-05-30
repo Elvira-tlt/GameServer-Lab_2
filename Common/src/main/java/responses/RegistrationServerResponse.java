@@ -3,15 +3,15 @@ package responses;
 
 
 public class RegistrationServerResponse implements Action {
-    private boolean loginIsSuccessful;
+    private LoginTypeResponseFromServer loginTypeResponseFromServer;
     private String nameConnectedUser;
 
-	public RegistrationServerResponse(boolean loginIsSuccessful) {
-        this.loginIsSuccessful = loginIsSuccessful;
+	public RegistrationServerResponse(LoginTypeResponseFromServer loginTypeResponseFromServer) {
+        this.loginTypeResponseFromServer = loginTypeResponseFromServer;
     }
     
-    public boolean getResponse() {
-    	return loginIsSuccessful;
+    public LoginTypeResponseFromServer getResponse() {
+    	return loginTypeResponseFromServer;
     }
     
     public String getNameConnectedUser() {

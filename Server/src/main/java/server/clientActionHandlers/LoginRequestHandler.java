@@ -10,6 +10,8 @@ import user.User;
 import server.UserDatabase;
 import server.ConnectedUsers;
 
+import java.util.List;
+
 public class LoginRequestHandler implements ClientActionHandler<LoginClientRequest> {
 	private UserDatabase userDatabase;
 	private ConnectedUsers connectedUsers;
@@ -23,11 +25,15 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
         String password = loginFromClientAction.getPassword();
             try {
                connectedUser = userDatabase.getUser(login,password);
-               loginTypeResponseFromServer = LoginTypeResponseFromServer.SUCCESSFUL;
-               clientConnector.setUser(connectedUser);
-               connectedUsers.addOnlineUser(connectedUser, clientConnector);
-               
-               
+               boolean thisUserIsConnectedNow = checkConnectedThisUserNow(connectedUser);
+
+                if(thisUserIsConnectedNow){
+                    loginTypeResponseFromServer = LoginTypeResponseFromServer.USER_CONNECTED;
+                } else {
+                    loginTypeResponseFromServer = LoginTypeResponseFromServer.SUCCESSFUL;
+                    clientConnector.setUser(connectedUser);
+                    connectedUsers.addOnlineUser(connectedUser, clientConnector);
+                }
             } catch (NotFoundException notFoundExeption) {
                 loginTypeResponseFromServer = LoginTypeResponseFromServer.NOT_FOUND;
             } catch (IncorrectPasswordExeption incorrectPasswordExeption) {
@@ -40,6 +46,18 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
     private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer loginTypeResponseFromServer) {
         LoginServerResponse loginServerResponse = new LoginServerResponse(loginTypeResponseFromServer);
         connector.sendAction(loginServerResponse);
+    }
+
+    private boolean checkConnectedThisUserNow(User userForCheck){
+        boolean userIsConnectedNow = false;
+        List<User> onlineUsers = connectedUsers.getOnlineUsersToConnector();
+        for(User onlineUser: onlineUsers){
+            if(userForCheck.equals(onlineUser)){
+                userIsConnectedNow = true;
+                break;
+            }
+        }
+        return userIsConnectedNow;
     }
 
     public void setUserDatabase(UserDatabase userDatabase) {

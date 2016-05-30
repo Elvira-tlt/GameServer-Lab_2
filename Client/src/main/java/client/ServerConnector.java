@@ -44,7 +44,7 @@ public class ServerConnector extends Thread{
 			isConnectedToServer = true;
 
 			//////
-			System.out.println("Client socket "+socket);
+			//System.out.println("Client socket "+socket);
 			///
 
 		}catch (ConnectException e) {

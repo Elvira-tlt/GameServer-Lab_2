@@ -10,7 +10,6 @@ import typeTeam.TypeTeam;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -18,6 +17,7 @@ import java.util.Set;
 public class GamePanel extends JPanel {
 	private TableModelGame tableModelGame = new TableModelGame();
 	private JTable tableGameMoved = new JTable(tableModelGame);
+	private MouseAdapter clickOnGameTable;
 
 	private final String[][] STARTED_VALUE_MADE_MOVES = new String[][] {
 			new String[] {" ", " ", " "},
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
 	private GamePlayerPanel thisPlayersPanel = new GamePlayerPanel();
 	private GamePlayerPanel rivalPlayersPanel = new GamePlayerPanel();
 	private InformationTextGamePanel informationTextGamePanel = new InformationTextGamePanel();
-	private final Dimension SIZE_PLAYERS_PANEL = new Dimension(620, 250);
+	private final Dimension SIZE_PLAYERS_PANEL = new Dimension(620, 220);
 	private final Font FONT_TABLE_GAME = new Font("Times New Roman", Font.CENTER_BASELINE, 75);
 
 	public void display(){
@@ -42,7 +42,6 @@ public class GamePanel extends JPanel {
 		tableModelGame.setMadeMoves(madeMoves);
 		tableGameMoved.setFont(FONT_TABLE_GAME);
 		updateTableModelGame();
-		//updateTextInformationGamePanel();
     }
     
 	private void updateTableModelGame() {
@@ -110,20 +109,20 @@ public class GamePanel extends JPanel {
 
 	public void setListenersToGameTable(MouseAdapter mouseAdapter){
 		tableGameMoved.addMouseListener(mouseAdapter);
+		clickOnGameTable = mouseAdapter;
+	}
+
+	public void retrieveListenersToGameTable(){
+		if(clickOnGameTable != null) {
+			tableGameMoved.addMouseListener(clickOnGameTable);
+			tableGameMoved.setSelectionBackground(Color.yellow);
+		}
 	}
 
 	public void deleteListenersInGameTable(){
-		MouseListener[] mouseListeners = tableGameMoved.getMouseListeners();
-		for(MouseListener mouseListener: mouseListeners){
-			tableGameMoved.removeMouseListener(mouseListener);
-		}
-		//delete selecting color in JTable:
+		tableGameMoved.removeMouseListener(clickOnGameTable);
 		tableGameMoved.setSelectionBackground(Color.white);
 	}
-
-
-
-	//http://www.skipy.ru/technics/layouts.html
 
 	public JTable getTableGameMoved() {
 		return tableGameMoved;

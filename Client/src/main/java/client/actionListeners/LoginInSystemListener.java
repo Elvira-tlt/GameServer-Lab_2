@@ -22,7 +22,6 @@ public class LoginInSystemListener implements ActionListener {
 		this.mainWindow = mainWindow;
 	}
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
 		loginJFrame = mainWindow.getLoginJFrame();
@@ -42,7 +41,6 @@ public class LoginInSystemListener implements ActionListener {
 	private void sendRequest(String loginValue, String passwordValue){
 		LoginClientRequest loginRequest = new LoginClientRequest(loginValue, passwordValue);
 		serverConnector.sendToClientConnector(loginRequest);
-
 		loginJFrame.dispose();
 	}
 

@@ -18,6 +18,7 @@ public class RegistrationInSystemListener implements ActionListener {
 	private String passwordValue;
 	private final String WARN_INFORMATION_ON_LOGIN_FRAME = new String("Поля Логин и пароль обязательно должны быть заполнены.");
 
+	
 	public RegistrationInSystemListener(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
@@ -41,8 +42,6 @@ public class RegistrationInSystemListener implements ActionListener {
 	private void sendRequest(String loginValue, String passwordValue){
 		RegistrationClientRequest registrationRequest = new RegistrationClientRequest(loginValue, passwordValue);
 		serverConnector.sendToClientConnector(registrationRequest);
-
-		
 		loginJFrame.dispose();
 	}
     

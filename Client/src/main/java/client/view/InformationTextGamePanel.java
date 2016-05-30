@@ -22,7 +22,7 @@ public class InformationTextGamePanel extends JPanel{
 		gameText.setPreferredSize(sizeText);
 		gameText.setFont(new Font("Times New Roman", Font.ITALIC, 20));
 		setPreferredSize(size);
-		setBorder(new LineBorder(Color.red));
+		//setBorder(new LineBorder(Color.red));
 		
 		add(gameText);
 	}

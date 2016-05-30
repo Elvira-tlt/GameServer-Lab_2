@@ -15,7 +15,6 @@ public class Game {
     private Map<User, TypeTeam> players2TypeTeam = new HashMap<>();
     private Map<TypeTeam, String> typeTeam2DisplayedString = new HashMap<>();
 	private List<User> playersThisGame = new ArrayList<User>();
-	private Integer[] checkList = new Integer[]{-2, -1, 0, 1, 2};
 	private String[][] madeMoves  = new String[3][3];
 
 	private User player1;
@@ -23,7 +22,6 @@ public class Game {
 
     private User currentPlayer;
     private boolean isGameWin;
-    private boolean isGameEnd;
 
     private GameRepository gameRepository;
 
@@ -32,6 +30,34 @@ public class Game {
     	setClientConnectorsPlayers(clientConnector1, clientConnector2);
         setTypeTeamToPlayers();
         setFirstMadeMovePlayer();
+    }
+
+    //обработчик действий игроков:
+    public void moveMade(Move movePlayer, User playerMadeAMove){
+
+        if(playerMadeAMove.equals(currentPlayer)){
+            otherPlayer = getOtherPlayer(currentPlayer);
+
+            int xMove = movePlayer.getRowIndex();
+            int yMove = movePlayer.getColumnIndex();
+
+            TypeTeam typeTeamCurrentPlayer = players2TypeTeam.get(currentPlayer);
+            String valuePlayerTeam = typeTeam2DisplayedString.get(typeTeamCurrentPlayer);
+
+            if (checkMayMadeMoveToHere(xMove, yMove)){
+                madeMoves[xMove][yMove] = valuePlayerTeam;
+
+                boolean isGameEnd = checkGame(xMove, yMove);
+                sendResponseForPlayers(isGameEnd, currentPlayer, otherPlayer);
+
+                //change current player:
+                currentPlayer = otherPlayer;
+            }
+        }
+    }
+
+    public Map<User, TypeTeam> getPlayers2TypeTeam() {
+        return players2TypeTeam;
     }
 
     private void setClientConnectorsPlayers(ClientConnector clientConnector1, ClientConnector clientConnector2){
@@ -48,80 +74,48 @@ public class Game {
         TypeTeam typeTeamPlayer2 = getTypeTeamNotThis(typeTeamPlayer1);
         players2TypeTeam.put(player1, typeTeamPlayer1);
         players2TypeTeam.put(player2, typeTeamPlayer2);
+
+        //
+        System.out.println("IN GAME Type player1: " + player1 + typeTeamPlayer1);
+        System.out.println("IN GAME Type player2: " + player2 + typeTeamPlayer2);
+        //
+
+
     }
 
-  //обработчик действий игроков:
-    public void moveMade(Move movePlayer, User playerMadeAMove){
-
-        if(playerMadeAMove.equals(currentPlayer)){
-            otherPlayer = getOtherPlayer(currentPlayer);
-
-            int xMove = movePlayer.getRowIndex();
-            int yMove = movePlayer.getColumnIndex();
-
-            TypeTeam typeTeamCurrentPlayer = players2TypeTeam.get(currentPlayer);
-            String valuePlayerTeam = typeTeam2DisplayedString.get(typeTeamCurrentPlayer);
-            
-            if (checkMayMadeMoveToHere(xMove, yMove)){
-        		madeMoves[xMove][yMove] = valuePlayerTeam;
-        		
-        		checkGame(xMove, yMove);
-        		
-        		sendResponseForPlayers(isGameEnd, currentPlayer, otherPlayer);
-               
-                
-                //change current player:
-                currentPlayer = otherPlayer;
-            }
-        }
-    }
-    
-    //get TypeEndedGame: Win, End
-    private void checkGame(int xMove, int yMove){
-    	//Проверка, завершилась ли игра
-    	
+    private boolean checkGame(int xMove, int yMove){
+        boolean isGameEnd;
     	CheckWinGame checkWinGame = new CheckWinGame(madeMoves);
     	isGameWin = checkWinGame.getGameisWin(xMove, yMove);
 		if(isGameWin){
-			//TODO проверить, завершилась ли игра 
-			//если да, то Game end, game remove
-			isGameEnd = true;
             endedThisGame();
+            isGameEnd = true;
         } else {
-			// проверить на окончание игры, отправить ответ
-			isGameEnd = false;
+			isGameEnd = getCheckEndedGame();
 		}
+        return  isGameEnd;
     }
-    
+
     private boolean getCheckEndedGame(){
-    	boolean gameIsEnd = false;
+    	boolean gameIsEnd = true;
     	for(String[] valueArrayCell: madeMoves){
     		for(String valueCell: valueArrayCell){
-    			if(valueCell != null){
-    				gameIsEnd = true;
+    			if(valueCell == null){
+    				gameIsEnd = false;
     				break;
     			}
     		}
     	}
-    	
-    	//http://lord-n.narod.ru/download/books/walla/programming/Spr_po_C/03/0306.htm
-    	//http://developer.alexanderklimov.ru/android/java/break.php
-    	//http://javatalks.ru/topics/5714
-    	
     	return gameIsEnd;
     }
-    
+
     private boolean checkMayMadeMoveToHere(int xMove, int yMove){
     	String valueHere = madeMoves[xMove][yMove];
     	boolean mayMakeMove = valueHere == null;
     	return mayMakeMove;
     }
 
-    public Map<User, TypeTeam> getPlayers2TypeTeam() {
-        return players2TypeTeam;
-    }
-
-    private User getOtherPlayer(User currentPlayer){
+    public User getOtherPlayer(User currentPlayer){
         for(User player: playersThisGame ){
             if (player != currentPlayer) {
             	otherPlayer = player;
@@ -185,7 +179,6 @@ public class Game {
             }
         }
     }
-
     private User otherPlayer;
 
     public String getNamePlayerCurrentStroke() {
@@ -198,7 +191,6 @@ public class Game {
     }
 
     private void endedThisGame(){
-        //TODO
         gameRepository.removeGame(this);
     }
 }

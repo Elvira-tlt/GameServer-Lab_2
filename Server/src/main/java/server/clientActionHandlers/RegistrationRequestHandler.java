@@ -2,6 +2,7 @@ package server.clientActionHandlers;
 
 
 import requests.RegistrationClientRequest;
+import responses.LoginTypeResponseFromServer;
 import server.ClientActionHandler;
 import responses.RegistrationServerResponse;
 import server.ClientConnector;
@@ -9,29 +10,30 @@ import server.ConnectedUsers;
 import user.User;
 import server.UserDatabase;
 
+import java.util.List;
+
 public class RegistrationRequestHandler implements ClientActionHandler<RegistrationClientRequest> {
 	private UserDatabase userDatabase;
 	private ConnectedUsers connectedUsers;
 
     @Override
     public void handle(RegistrationClientRequest registrationClientRequest, ClientConnector connector) {
-          //////
-        System.out.println("IN Registration Server's handler");
-        //////
-
         User connectedUser = null;
-        boolean isSuccessfulRegistration = false;
+        LoginTypeResponseFromServer loginTypeResponseFromServer;
 
         String login = registrationClientRequest.getLogin();
         String password = registrationClientRequest.getPassword();
-        
-            connectedUser = createNewUser(login, password);
-            userDatabase.addUser(connectedUser);
-            isSuccessfulRegistration = true;
-            connector.setUser(connectedUser);
-            connectedUsers.addOnlineUser(connectedUser, connector);
 
-        sendResponseToClient(connector, isSuccessfulRegistration);
+        boolean thisNameIsUnigue = checkUniqueName(login);
+        if(thisNameIsUnigue){
+            connectedUser = createNewUser(login, password);
+            loginTypeResponseFromServer = LoginTypeResponseFromServer.SUCCESSFUL;
+            userDatabase.addUser(connectedUser);
+            connector.setUser(connectedUser);
+        } else {
+            loginTypeResponseFromServer = LoginTypeResponseFromServer.NOT_UNIQUE_NAME;
+        }
+        sendResponseToClient(connector, loginTypeResponseFromServer);
     }
 
     private User createNewUser(String userName, String passwordUser) {
@@ -50,8 +52,21 @@ public class RegistrationRequestHandler implements ClientActionHandler<Registrat
         this.connectedUsers = connectedUsers;
     }
 
-    private void sendResponseToClient(ClientConnector connector, boolean responseAboutConnected) {
+    private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer responseAboutConnected) {
        RegistrationServerResponse registrationServerResponse = new RegistrationServerResponse(responseAboutConnected);
        connector.sendAction(registrationServerResponse);
+    }
+
+    private boolean checkUniqueName(String nameFirCheck){
+        boolean thisNameIsUnique = true;
+        List<User> usersInDatabase = userDatabase.getIdentidiedUsers();
+        for(User userInDatabase: usersInDatabase){
+            String nameUserInDatabase = userInDatabase.getNameUser();
+            if(nameUserInDatabase.equals(nameFirCheck)){
+                thisNameIsUnique = false;
+                break;
+            }
+        }
+        return thisNameIsUnique;
     }
 }
