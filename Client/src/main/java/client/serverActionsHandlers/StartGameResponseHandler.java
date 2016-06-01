@@ -35,10 +35,4 @@ public class StartGameResponseHandler implements ServerActionHandler<StartGameRe
     public void setMainWindow(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
     }
-
-
-
-
-
-
 }

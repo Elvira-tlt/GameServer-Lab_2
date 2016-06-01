@@ -17,15 +17,15 @@ import java.util.Set;
 public class PanelOnlineUsers extends JPanel {
 	private final static int WIDTH_TABLES = 230;
 	private final static int HEIGHT_ROWS_TABLES = 25;
-	private final static Dimension MINIMUM_PANEL_SIZE = new Dimension(250, 650);
+	private final static Dimension MINIMUM_PANEL_SIZE = new Dimension(250, 550);
 	private final static Dimension MAXIMUM_PANEL_SIZE = new Dimension(280, 650);
-	private final static Dimension PREFERRED_PANEL_SIZE = new Dimension(265, 650);
-	private final static Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(240, 450);
+	private final static Dimension PREFERRED_PANEL_SIZE = new Dimension(265, 550);
+	private final static Dimension MINIMUM_PANEL_ONLINE_USERS_SIZE = new Dimension(240, 430);
 	private final static String TEXT_TO_BUTTON_PLAY= "<html> Выберите соперника для игры и нажмите <br> 'начать игру'   "+
 			"Если соперник не выбран,<br> то  он будет выбран случайным образом </html> ";
 	private final static String NAME_BUTTON_PLAY = "Начать игру";
 	private final static String TEXT_TO_BUTTON_QUIT= "<html> Если Вам необходимо покинуть игру, <br> нажмите \"Сдаться\". " +
-			" В этом случае победа <br> будет присуждена Вашему сопернику </html> "; // <br>
+			" В этом случае победа <br> будет присуждена Вашему сопернику </html> ";
 	private final static String NAME_BUTTON_QUIT = "Сдаться";
 
 	private List<User> freeUsersList = new ArrayList<>();
@@ -40,6 +40,7 @@ public class PanelOnlineUsers extends JPanel {
 	private JPanel panelFreeUsers = new JPanel();
 	private JPanel panelPlayers = new JPanel();
 	private JPanel panelButton = new JPanel();
+	private PanelIdentifiedUser panelIdentifiedUser;
 
 	private JTabbedPane tabedOnlineUsers = new JTabbedPane();
 
@@ -105,6 +106,9 @@ public class PanelOnlineUsers extends JPanel {
 
 		textToButton.setFont(new Font("Times New Roman", Font.PLAIN, 13));
 
+		panelIdentifiedUser = new PanelIdentifiedUser();
+
+		add(panelIdentifiedUser);
 		add(tabedOnlineUsers);
 		add(panelButton, BorderLayout.SOUTH);
 	}
@@ -151,5 +155,10 @@ public class PanelOnlineUsers extends JPanel {
 
 	public void setListenerToQuitButton(ActionListener listener){
 		quitButton.addActionListener(listener);;
+	}
+
+	public void setNameIdentifiedUser(String nameIdentifiedUser){
+		panelIdentifiedUser.setNameIdentifiedUser(nameIdentifiedUser);
+		panelIdentifiedUser.display();
 	}
 }

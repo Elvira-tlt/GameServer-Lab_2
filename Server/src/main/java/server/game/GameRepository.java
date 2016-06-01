@@ -11,11 +11,6 @@ public class GameRepository {
 
 	private Map<User, Game> users2game = new HashMap<>();
 
-/*	public Collection<Game> getActualGames() {
-		Collection <Game> actualGames = users2game.values();
-		return actualGames;
-	}*/
-
 	public void setPlayer2Game(User user, Game newGame) {
 		newGame.setGameRepository(this);
 		users2game.put(user, newGame);

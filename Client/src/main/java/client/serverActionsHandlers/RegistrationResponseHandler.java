@@ -12,7 +12,6 @@ import responses.RegistrationServerResponse;
 
 public class RegistrationResponseHandler implements ServerActionHandler<RegistrationServerResponse> {
 	private MainWindow mainWindow;
-	private ServerConnector serverConnector;
 	private final static String TEXT_SUCCESSFUL_REGISTRATION = "<html>Вы успешно зарегистрировались!" +
 			"<br> Пожалуйста, введите ваши данные еще раз, чтобы войти в систему. </html>" ;
     

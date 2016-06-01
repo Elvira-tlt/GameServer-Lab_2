@@ -1,7 +1,6 @@
 package client.serverActionsHandlers;
 
-import javax.swing.JFrame;
-
+import client.view.PanelOnlineUsers;
 import requests.ServerActionHandler;
 import requests.UsersClientRequest;
 import responses.LoginServerResponse;
@@ -19,7 +18,7 @@ public class LoginResponseHandler implements ServerActionHandler<LoginServerResp
     @Override
     public void handle(LoginServerResponse loginResponse) {
     	ConnectingWindow connectingWindow = mainWindow.getLoginJFrame();
-    	
+
     	LoginTypeResponseFromServer responseServer = loginResponse.getResponse();
     	if(responseServer == LoginTypeResponseFromServer.NOT_FOUND){
     		connectingWindow.setTextToProcessInformation(TypeInformationText.NEGATIVE, "Пожалуйста, проверьте правильность введеных Вами данных");
@@ -34,7 +33,10 @@ public class LoginResponseHandler implements ServerActionHandler<LoginServerResp
     		connectingWindow.setTextToProcessInformation(TypeInformationText.POSITIVE, "УСПЕШНО!");
     		String nameConnectedUser = loginResponse.getNameConnectedUser();
 			serverConnector.setNameConnectedUser(nameConnectedUser);
-    		mainWindow.displayWindow();
+			PanelOnlineUsers panelOnlineUsers = mainWindow.getPanelOnlineUsers();
+			panelOnlineUsers.setNameIdentifiedUser(nameConnectedUser);
+			System.out.println(nameConnectedUser);
+			mainWindow.displayWindow();
     		
 			serverConnector.sendToClientConnector(new UsersClientRequest());
     	}
@@ -47,5 +49,4 @@ public class LoginResponseHandler implements ServerActionHandler<LoginServerResp
     public void setServerconnector (ServerConnector serverConnector){
     	this.serverConnector = serverConnector;
     }
-    
 }

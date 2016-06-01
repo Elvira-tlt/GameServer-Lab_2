@@ -28,11 +28,11 @@ public class MoveGameResponse implements Action {
 	@Override
 	public String toString() {
 		return "MoveGameResponse{" +
-				"madeMoves=" + PRINT_Array(madeMoves) +
+				"madeMoves=" + printArray(madeMoves) +
 				'}';
 	}
 
-	private String PRINT_Array(String[][] arrayForPrint){
+	private String printArray(String[][] arrayForPrint){
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for(int i=0; i<3; i++){

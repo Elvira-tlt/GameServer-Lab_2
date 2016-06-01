@@ -11,7 +11,7 @@ import requests.ExitFromGameClientRequest;
 import javax.swing.*;
 
 public class MainWindow extends JFrame{
-	private final static String TITLEGAME = "Игра \"Морской бой\"";
+	private final static String TITLEGAME = "Игра \"Крестики - нолики\"";
 	private ConnectingWindow connectingWindow = new ConnectingWindow();
     private PanelOnlineUsers panelOnlineUsers = new PanelOnlineUsers();
     private GamePanel gamePanel = new GamePanel();
@@ -26,28 +26,21 @@ public class MainWindow extends JFrame{
    
     public MainWindow(ServerConnector serverConnector) {
         this.serverConnector = serverConnector;
-
         createListeners();
         addListenersTo();
-
         setSize(900, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(closingProgram);
         setTitle(TITLEGAME);
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
-
 	}
 
     public void displayWindow(){
     	prepareMainWindowElements();
     }
-    
-   /* public void displayGamePanel(){
-    	gamePanel.display();
-    }*/
-    
+
     public void displayStartWindow(){
         displayConnectingWindow();
     }
@@ -75,7 +68,6 @@ public class MainWindow extends JFrame{
     }
 
     private void createListeners(){
-        //TODO
         loginInSystemListener = new LoginInSystemListener(this);
         registrationInSystemListener = new RegistrationInSystemListener(this);
         startGameListener = new StartedGameListener();
@@ -98,7 +90,6 @@ public class MainWindow extends JFrame{
         panelOnlineUsers.setListenerToQuitButton(quitInGameListener);
         gamePanel.setListenersToGameTable(clickOnGameTableListener);
     }
-
 
     public PanelOnlineUsers getPanelOnlineUsers(){
     	return panelOnlineUsers;

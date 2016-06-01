@@ -29,14 +29,17 @@ public class StartedGameListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 		int indexNumberSelectedUser = tableFreeUsers.getSelectedRow();
 		rivalIsSelected = indexNumberSelectedUser >=0;
-		
+		List<User> freeUsers = panelOnlineUsers.getFreeUsersList();
+		boolean isHaveFreeUser = freeUsers.size() > 0;
+
 		if(rivalIsSelected) {
-			List<User> freeUsers = panelOnlineUsers.getFreeUsersList();
 			rival = freeUsers.get(indexNumberSelectedUser);
 			LOG.info("Selected rival: {}", rival);
 		} else {
-			rival = getRandomSelectedRival();
-			LOG.info("Selected random rival: {}", rival);
+			if(isHaveFreeUser) {
+				rival = getRandomSelectedRival();
+				LOG.info("Selected random rival: {}", rival);
+			}
 		}
 		sendRequest(rival);
     }

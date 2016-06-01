@@ -12,8 +12,8 @@ public class InformationTextGamePanel extends JPanel{
 	private final static String INFORMATION_TEXT_STROKE = "Ход игрока ";
 	private final static String INFORMATION_RESULT_WIN_GAME = "<html> Игра окончена.<br> Победил игрок: ";
 	private final static String INFORMATION_RESULT_STANDOFF_GAME = "<html> Игра окончена.<br> НИЧЬЯ ";
-	private final int WIDHT = 275;
-	private final int HEIGHT =200;
+	private static final int WIDHT = 275;
+	private static final int HEIGHT =200;
 	private Dimension size = new Dimension(WIDHT, HEIGHT);
 	private Dimension sizeText = new Dimension(WIDHT, HEIGHT);
 	

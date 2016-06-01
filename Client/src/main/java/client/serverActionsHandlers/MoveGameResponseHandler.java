@@ -23,5 +23,4 @@ public class MoveGameResponseHandler implements ServerActionHandler<MoveGameResp
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
-
 }

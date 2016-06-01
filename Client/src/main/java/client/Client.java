@@ -39,8 +39,7 @@ public class Client {
 		StartGameResponseHandler startGameResponseHandler = new StartGameResponseHandler();
 		MoveGameResponseHandler moveGameResponseHandler = new MoveGameResponseHandler();
 		EndedGameResponseHandler endedGameResponseHandler = new EndedGameResponseHandler();
-		
-		
+
 		//setting other classes to
 		loginResponseHandlerClient.setMainWindow(mainWindow);
 		loginResponseHandlerClient.setServerconnector(serverConnector);

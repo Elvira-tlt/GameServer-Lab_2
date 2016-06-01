@@ -10,7 +10,7 @@ import java.util.Random;
 import static java.awt.Color.cyan;
 
 public class GamePlayerPanel extends JPanel {
-	private final static int WIDTH_PANEL = 160; //232
+	private final static int WIDTH_PANEL = 160;
 	private final static int HEIGHT_PANEL = 200;
 	private final Dimension PANEL_SIZE = new Dimension(WIDTH_PANEL,HEIGHT_PANEL);
 	private String whoDisplayed;

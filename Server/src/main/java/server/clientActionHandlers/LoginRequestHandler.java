@@ -19,6 +19,7 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
     @Override
     public void handle(LoginClientRequest loginFromClientAction, ClientConnector clientConnector) {
     	User connectedUser = null;
+        String nameConnectedUser = null;
         LoginTypeResponseFromServer loginTypeResponseFromServer;
 
         String login = loginFromClientAction.getLogin();
@@ -39,12 +40,15 @@ public class LoginRequestHandler implements ClientActionHandler<LoginClientReque
             } catch (IncorrectPasswordExeption incorrectPasswordExeption) {
                 loginTypeResponseFromServer = LoginTypeResponseFromServer.INCORRECT_PASSWORD;
             }
-
-        sendResponseToClient(clientConnector, loginTypeResponseFromServer);
+        if(connectedUser != null) {
+            nameConnectedUser = connectedUser.getNameUser();
+        }
+        sendResponseToClient(clientConnector, loginTypeResponseFromServer, nameConnectedUser );
     }
 
-    private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer loginTypeResponseFromServer) {
+    private void sendResponseToClient(ClientConnector connector, LoginTypeResponseFromServer loginTypeResponseFromServer, String nameConnectedUser) {
         LoginServerResponse loginServerResponse = new LoginServerResponse(loginTypeResponseFromServer);
+        loginServerResponse.setNameConnectedUser(nameConnectedUser);
         connector.sendAction(loginServerResponse);
     }
 
